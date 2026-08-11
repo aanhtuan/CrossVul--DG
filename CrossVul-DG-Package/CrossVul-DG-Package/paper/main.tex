@@ -1,0 +1,624 @@
+%==============================================================
+% CrossVul-DG: Class-Conditional Domain Generalization for
+% Cross-Project Software Vulnerability Detection
+% IEEE conference format, double-blind.
+%
+% NOTE: Every quantitative value below is an illustrative
+% placeholder until scripts/run_full_sweep.sh has been run on
+% MegaVul. Replace the em-dashes / placeholder numbers with
+% measured results before submission.
+%==============================================================
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{url}
+\usepackage{xcolor}
+\usepackage[colorlinks=true,allcolors=blue]{hyperref}
+
+% Lightweight "placeholder/notice" box used to keep the draft honest.
+\newcommand{\notice}[1]{%
+  \par\vspace{2pt}\noindent
+  \fcolorbox{red!60}{red!4}{\parbox{0.97\columnwidth}{\footnotesize
+  \textbf{Placeholder notice.} #1}}\par\vspace{3pt}}
+
+\begin{document}
+
+\title{CrossVul-DG: Class-Conditional Domain Generalization\\
+for Cross-Project Software Vulnerability Detection}
+
+\author{\IEEEauthorblockN{Anonymous Author(s)}
+\IEEEauthorblockA{Affiliation withheld for double-blind review\\
+Email: anonymous@example.com}}
+
+\maketitle
+
+%==============================================================
+\begin{abstract}
+Deep-learning models for software vulnerability detection (SVD)
+degrade sharply on projects unseen during training, because of
+domain shift in coding conventions, naming, and architecture.
+Domain Adaptation (DA) needs target-project data at training
+time, which is unrealistic for proactive deployment; recent
+Domain Generalization (DG) for SVD takes the \emph{project} as
+the only unit of invariance and is \emph{class-blind}, ignoring
+the severe class imbalance of real vulnerability data. We argue
+cross-project SVD is a \emph{coupled} domain-shift and
+class-imbalance problem, and we propose \textbf{CC-DRO}
+(Class-Conditional Distributionally-Robust Optimization): it
+forms distributional groups over \emph{(project $\times$ class)}
+cells and adds a cross-project \emph{positive-class} risk-invariance
+penalty, so a model's vulnerability sensitivity is robust
+\emph{and} consistent across unseen projects. We study CC-DRO
+against ERM, IRM, GroupDRO, two DA baselines (which access
+unlabelled target data), and a pseudo-domain variant, under a
+leave-one-project-out (LOPO) protocol on MegaVul with a
+chronological 8:1:1 split, a shared imbalanced-data protocol
+(class-weighted loss, validation-tuned threshold, PR-AUC as the
+primary metric), and three encoder backbones. We expect CC-DRO
+to improve cross-project PR-AUC and, in particular, to narrow
+the cross-project \emph{vulnerability-recall gap} relative to
+class-blind DG, with only a marginal seen-project regression.
+The figures in this manuscript are illustrative placeholders
+pending the full run; we release code and pre-processed splits
+for reproducibility.
+\end{abstract}
+
+\begin{IEEEkeywords}
+software vulnerability detection, domain generalization,
+class imbalance, distributionally robust optimization, IRM,
+MegaVul, cross-project, CodeBERT
+\end{IEEEkeywords}
+
+%==============================================================
+\section{Introduction}
+Software vulnerabilities cause large-scale economic and societal
+harm, and automated detection is an intensive research focus,
+with deep-learning detectors achieving strong in-distribution
+F1~\cite{vuldeepecker,devign,linevul,vulberta}. Yet when these
+models are trained on one codebase and applied to
+another, performance often drops
+substantially~\cite{reveal,steenhoek}. This cross-project gap is
+a fundamental barrier to deployment: a security team rarely has
+labelled vulnerabilities in the target codebase before scanning it.
+
+\notice{This is a study-protocol draft. Every quantitative value
+in the abstract and in Section~\ref{sec:results} is an
+illustrative placeholder produced only to exercise the released
+analysis pipeline; the numbers are \emph{not} measured results on
+MegaVul. They must be replaced with values from the experiments
+in Section~\ref{sec:setup} before this manuscript is submitted.}
+
+A natural response is Domain Adaptation (DA), aligning the model
+using unlabelled or partially labelled target
+data~\cite{dann,coral}. DA presupposes target data at training
+time, which is unrealistic for proactive deployment (e.g., a
+vendor shipping a detector to unknown customer codebases). Domain
+Generalization (DG) instead learns representations that
+generalise to \emph{any} unseen domain using only source data at
+training time~\cite{muandet,irm,dro}. DG is mature in computer
+vision; in SVD it has begun to appear only recently, e.g.\ the
+cluster-based ensemble method CEVD~\cite{cevd}.
+
+\noindent\textbf{The coupled problem.}
+Cross-project SVD is \emph{not} a pure domain-shift problem. Real
+vulnerability datasets are highly imbalanced --- in MegaVul
+roughly one function in twenty is vulnerable. Off-the-shelf DG
+objectives (IRM, GroupDRO) take the project as the unit of
+invariance and are \emph{class-blind}: under $\sim$1:19 imbalance,
+the worst-case \emph{per-project} risk can be minimised by
+excelling on the dominant safe class, so the rare-but-critical
+vulnerability signal is under-served, and nothing in the objective
+makes vulnerability \emph{recall} consistent across projects. A
+detector can thus look strong on aggregate while its ability to
+flag real vulnerabilities swings widely from project to project.
+
+\noindent\textbf{This paper.}
+We present CrossVul-DG, an empirical study of
+invariance/robustness-based DG for cross-project SVD on
+MegaVul~\cite{megavul}, and we introduce \textbf{CC-DRO}, a
+class-conditional robust objective for the coupled problem.
+CC-DRO (i) replaces project-level groups with (project
+$\times$ class) cells so the worst case explicitly includes the
+\emph{(project, vulnerable)} cells, and (ii) adds a penalty equal
+to the variance, across projects, of the positive-class risk,
+forcing vulnerability sensitivity to be invariant across projects.
+All methods share a single imbalanced-data protocol so the
+comparison is fair, and we test generality across three code
+encoders (CodeBERT~\cite{codebert},
+GraphCodeBERT~\cite{graphcodebert}, UniXcoder~\cite{unixcoder}).
+
+\noindent\textbf{Research questions.}
+\begin{itemize}
+\item \textbf{RQ1.} Does DG (IRM, GroupDRO, or CC-DRO) improve
+cross-project PR-AUC over standard ERM fine-tuning?
+\item \textbf{RQ2.} How does DG compare with DA methods that have
+access to (unlabelled) target data?
+\item \textbf{RQ3.} \emph{(Core)} Does class-conditional
+invariance (CC-DRO) reduce the cross-project
+\emph{vulnerability-recall gap} relative to class-blind DG?
+\item \textbf{RQ4.} What is the trade-off between cross-project
+gain and seen-project performance?
+\item \textbf{RQ5.} Does the CC-DRO gain transfer across encoder
+backbones?
+\item \textbf{RQ6.} \emph{(Optional)} How do prompted code-LLMs
+perform as zero-/few-shot cross-project detectors?
+\end{itemize}
+
+\noindent\textbf{Contributions.}
+\begin{enumerate}
+\item We frame cross-project SVD as a \emph{coupled} domain-shift
+and class-imbalance problem and propose \textbf{CC-DRO}, to our
+knowledge the first class-conditional robust DG objective for SVD,
+with an explicit cross-project positive-class invariance penalty.
+\item We provide a reproducible LOPO protocol on MegaVul with a
+shared imbalanced-data treatment (class-weighted loss,
+validation-tuned decision threshold, PR-AUC primary metric, and a
+leakage-free DA target split), and statistical significance
+testing.
+\item We adapt IRM, GroupDRO and a pseudo-domain extension to the
+same protocol as baselines, and evaluate across three code
+encoders.
+\item We release pre-processed splits, training pipelines, and
+evaluation scripts.\footnote{\url{https://github.com/anonymous/crossvul-dg}
+(anonymised for review).} (Quantitative gains in this draft are
+placeholders to be confirmed by the released pipeline.)
+\end{enumerate}
+
+%==============================================================
+\section{Background and Related Work}
+\subsection{Deep Learning for Vulnerability Detection}
+Early sequence detectors such as VulDeePecker~\cite{vuldeepecker}
+used LSTMs over token sequences. Graph methods, notably
+Devign~\cite{devign} and the ReVeal study~\cite{reveal}, encoded
+code property graphs with GNNs. Transformer encoders ---
+CodeBERT~\cite{codebert}, GraphCodeBERT~\cite{graphcodebert},
+UniXcoder~\cite{unixcoder} --- are now the de facto backbone, with
+LineVul~\cite{linevul} a strong line-level baseline and
+VulBERTa~\cite{vulberta} a simplified recipe. LLM
+studies~\cite{vulbench} report that prompted detectors remain
+expensive and unstable across projects.
+
+\subsection{Cross-Project Vulnerability Detection}
+Chakraborty et al.~\cite{reveal} documented the severity of
+cross-project drops; Steenhoek et al.~\cite{steenhoek} confirmed
+them under a controlled study. Two recent lines target
+generalization directly. CEVD~\cite{cevd} is a DG method that
+clusters code embeddings into pseudo-domains and trains an
+ensemble of per-domain experts fused by a domain classifier, with
+no target data. VulGate~\cite{vulgate} is an orthogonal,
+data-centric effort: a large de-duplicated dataset (236,663
+functions, with a 500-sample expert-verified cross-project test
+set) showing data quality and model choice strongly affect
+generalization. CrossVul-DG differs from CEVD by applying explicit
+invariance/robustness objectives over the natural project
+environments and, with CC-DRO, by conditioning the robust
+objective on \emph{class}; it is complementary to VulGate, which
+improves the data rather than the objective.
+
+\subsection{Domain Generalization and Class Imbalance}
+DG learns predictors that generalise to unseen
+domains~\cite{muandet}. IRM~\cite{irm} penalises representations
+on which the optimal classifier differs across environments;
+GroupDRO~\cite{dro} minimises the worst-case group risk;
+gradient-matching (Fish~\cite{fish}) and Mixup-style augmentations
+extend the family. Surveys~\cite{dgsurvey1,dgsurvey2} note DG's
+maturity in vision/NLP but limited adoption in software
+engineering. Crucially, all of these define groups by domain
+\emph{only}. CC-DRO defines groups by domain $\times$ class and
+adds a positive-class invariance term --- a class-conditional
+robust objective tailored to imbalanced SVD.
+
+%==============================================================
+\section{The CrossVul-DG Framework}
+\subsection{Problem Formulation}
+Let $\mathcal{P}=\{p_1,\dots,p_K\}$ be the source projects. Each
+$p_k$ provides $D_k=\{(x_i^{(k)},y_i^{(k)})\}$ with function $x_i$
+and label $y_i\in\{0,1\}$ (vulnerable or not). The positive rate
+$\pi_k=\Pr[y=1\mid p_k]$ is small ($\approx 0.05$). We seek
+$f_\theta:\mathcal{X}\to\{0,1\}$ that generalises to an unseen
+project $p_\ast\notin\mathcal{P}$ using only
+$\bigcup_k D_k$ at training time (no target access), and whose
+\emph{positive-class} performance is consistent across projects.
+
+\subsection{Backbone Encoder}
+We use a fine-tuned code encoder $g_\phi$ (CodeBERT by default;
+GraphCodeBERT and UniXcoder for generality) producing a 768-d
+first-token representation, followed by a two-layer MLP $h_\psi$
+with a single logit output. We write $f_\theta=h_\psi\circ g_\phi$,
+$\theta=(\phi,\psi)$.
+
+\subsection{Imbalanced-Setting Protocol (shared by all methods)}
+\label{sec:imbal}
+Because we keep MegaVul's natural $\approx$1:19 ratio, every method
+shares the following, so differences reflect the objective, not
+the imbalance treatment:
+\begin{itemize}
+\item \textbf{Class-weighted loss.} Per-sample
+$\mathrm{BCE}$ with $\mathrm{pos\_weight}=N_{\text{neg}}/N_{\text{pos}}$
+on the training fold (capped), so optimisation does not collapse to
+the safe class.
+\item \textbf{Model selection on validation PR-AUC} (threshold-free;
+validation-F1 at a fixed $0.5$ threshold is unreliable under
+imbalance).
+\item \textbf{Validation-tuned decision threshold} (max-F1),
+applied unchanged at test --- no test-set peeking.
+\item \textbf{Primary metric PR-AUC}, with F1 at the tuned
+threshold, recall at precision $\ge 0.5$ (R@P50), and
+\emph{worst-project F1}.
+\item \textbf{Leakage-free DA target.} DA baselines use the
+chronologically \emph{earlier} portion of the held-out project as
+the unlabelled target; \emph{all} methods are scored on the
+\emph{later} portion (identical test set).
+\end{itemize}
+
+\subsection{ERM, IRM, GroupDRO (baselines)}
+Let $R_k(\theta)=\mathbb{E}_{D_k}[\,w_y\,\ell(f_\theta(x),y)\,]$ be
+the class-weighted risk on project $k$ ($w_y$ the pos\_weight on
+positives). ERM minimises $\frac1K\sum_k R_k$. IRM~\cite{irm} adds
+\begin{equation}
+\mathcal{L}_{\text{IRM}}=\sum_{k=1}^{K}R_k(\theta)
++\lambda\sum_{k=1}^{K}\big\|\nabla_{w|w=1}R_k(w\!\cdot\! f_\theta)\big\|^2,
+\end{equation}
+ramping $\lambda$ after a warm-up. GroupDRO~\cite{dro} minimises
+the worst-case project risk
+$\min_\theta\max_{q\in\Delta_K}\sum_k q_k R_k(\theta)$ via
+exponentiated-gradient updates
+$q_k\leftarrow q_k\exp(\eta_q R_k);\, q\leftarrow q/\sum_{k'}q_{k'}$.
+
+\subsection{CC-DRO: Class-Conditional DRO (proposed)}
+\label{sec:ccdro}
+CC-DRO changes the group structure and adds an invariance term.
+\textbf{(1) Class-conditional groups.} Groups are cells
+$g=(p,c)$ for project $p$ and class $c\in\{0,1\}$, giving $2K$
+cells; GroupDRO is run over the cells, so the worst case
+explicitly includes the $(p,1)$ \emph{vulnerable} cells.
+\textbf{(2) Positive-class invariance.} With $R_{p,\text{pos}}$ the
+mean weighted loss on project $p$'s positive samples, we penalise
+their variance across projects. The per-step objective is
+\begin{equation}
+\label{eq:ccdro}
+\mathcal{L}_{\text{CC-DRO}}=\sum_{g} q_g R_g(\theta)
+\;+\;\lambda_{\text{inv}}\;\operatorname{Var}_{p}\!\big(R_{p,\text{pos}}\big),
+\end{equation}
+where $g$ ranges over the cells present in the step and $q$ are
+exp-gradient weights over cells. Minimising the worst-case cell
+risk concentrates capacity on the hardest \emph{(project,
+vulnerable)} cells; minimising the positive-risk variance makes
+vulnerability recall consistent across projects. Cells absent from
+a mini-batch are omitted that step (rare-positive projects may
+yield no positives in a small batch); the penalty is applied only
+when $\ge 2$ projects contribute positives, and $\lambda_{\text{inv}}$
+is ramped after a warm-up. Algorithm~\ref{alg:ccdro} gives one
+optimisation step.
+
+\begin{algorithm}[t]
+\caption{CC-DRO optimisation step}
+\label{alg:ccdro}
+\begin{algorithmic}[1]
+\Require per-project batches $\{B_k\}_{k=1}^{K}$; cell weights
+$q$; pos\_weight $w$; penalty weight $\lambda_{\text{inv}}$
+\State $\mathcal{C}\gets\{\}$ \Comment{cell $\to$ mean loss};
+$\;\mathcal{R}^{+}\gets[\,]$
+\For{each project $k$ with batch $B_k$}
+  \State $\ell_i \gets w^{\,y_i}\,\mathrm{BCE}(f_\theta(x_i),y_i)$
+  for $(x_i,y_i)\in B_k$
+  \For{$c\in\{0,1\}$ present in $B_k$}
+     \State $\mathcal{C}[(k,c)] \gets \mathrm{mean}\{\ell_i : y_i=c\}$
+  \EndFor
+  \If{$(k,1)\in\mathcal{C}$}
+     \State append $\mathcal{C}[(k,1)]$ to $\mathcal{R}^{+}$
+  \EndIf
+\EndFor
+\State $q_g \gets q_g\exp(\eta_q\,\mathcal{C}[g])$ for $g\in\mathcal{C}$;\;
+$q\gets q/\sum q$ \Comment{DRO update}
+\State $L \gets \sum_{g\in\mathcal{C}} q_g\,\mathcal{C}[g]$
+\If{$|\mathcal{R}^{+}|\ge 2$}
+  \State $L \gets L + \lambda_{\text{inv}}\operatorname{Var}(\mathcal{R}^{+})$
+\EndIf
+\State back-propagate $L$; update $\theta$
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Pseudo-Domain Clustering (long-tail extension)}
+MegaVul has a long tail: the top-10 projects cover most samples
+while $\sim$980 are small. We optionally cluster small projects in
+embedding space (mean function embedding per project) into $C$
+pseudo-domains with $k$-means and add them as extra environments
+for GroupDRO (PD+DRO). Clustering code embeddings to expose latent
+domains is also central to CEVD~\cite{cevd}; here it is an
+auxiliary source of environments for a robust objective rather
+than the basis for an ensemble. Algorithm~\ref{alg:pd} summarises
+the procedure.
+
+\begin{algorithm}[t]
+\caption{Pseudo-domain construction (PD+DRO)}
+\label{alg:pd}
+\begin{algorithmic}[1]
+\Require top-$K$ projects $\mathcal{P}_{\text{top}}$; tail projects
+$\mathcal{P}_{\text{tail}}$; cluster count $C$
+\State compute mean embedding $\bar z_p$ for each
+$p\in\mathcal{P}_{\text{tail}}$ via the encoder
+\State cluster $\{\bar z_p\}$ into $C$ groups with $k$-means
+\State environments
+$\mathcal{E}\gets\mathcal{P}_{\text{top}}\cup\{c_1,\dots,c_C\}$
+\State train $f_\theta$ by minimising GroupDRO over $\mathcal{E}$
+\State \Return $f_\theta$
+\end{algorithmic}
+\end{algorithm}
+
+%==============================================================
+\section{Experimental Setup}
+\label{sec:setup}
+\subsection{Dataset}
+We use MegaVul~\cite{megavul}, a large real-world C/C++ dataset:
+17,380 vulnerabilities across 169 CWE types (2006--2023) from 992
+repositories; the function-level release has $\approx$17,000
+vulnerable and $\approx$320,000 non-vulnerable functions with CVE
+identifiers and commit timestamps. We select the top-10 projects
+by function count as LOPO environments (Table~\ref{tab:projects});
+the exact post-deduplication share is produced by the
+preprocessing script.
+
+\begin{table}[t]
+\centering
+\caption{Top-10 MegaVul projects used as LOPO environments.
+\emph{Placeholder: exact post-deduplication counts are produced by
+\texttt{prepare\_data.py} and will replace the dashes.}}
+\label{tab:projects}
+\begin{tabular}{lccc}
+\toprule
+Project & \#Func. & \#Vuln. & Vuln.\ \% \\
+\midrule
+Linux & --- & --- & --- \\
+Chromium & --- & --- & --- \\
+FFmpeg & --- & --- & --- \\
+QEMU & --- & --- & --- \\
+PHP-src & --- & --- & --- \\
+ImageMagick & --- & --- & --- \\
+OpenSSL & --- & --- & --- \\
+TensorFlow & --- & --- & --- \\
+Wireshark & --- & --- & --- \\
+systemd & --- & --- & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Splits and Protocol}
+A chronological 8:1:1 train/val/test split by commit date over the
+pooled selected samples (cut at the 0.8 and 0.9 time quantiles),
+rather than by year. For cross-project evaluation we use LOPO: each
+top-10 project is held out in turn; the held-out project is split
+chronologically into an earlier DA-target portion and a later test
+portion (Section~\ref{sec:imbal}). We report mean $\pm$ std across
+seeds (three for the main table; two for the backbone study) and
+test significance with a paired Wilcoxon signed-rank test over the
+10 folds.
+
+\subsection{Baselines and Methods}
+\textbf{ERM-FT} (fine-tuning, ignores project labels);
+\textbf{DA-DANN}~\cite{dann} and \textbf{DA-CORAL}~\cite{coral}
+(use the earlier portion of the held-out project as unlabelled
+target --- a reference, not strict DG); \textbf{CrossVul-DG (IRM)},
+\textbf{(DRO)}; \textbf{CC-DRO} (proposed); and
+\textbf{(PD+DRO)} (pseudo-domain + GroupDRO).
+
+\subsection{Implementation Details}
+Encoder \texttt{microsoft/codebert-base} (and
+\texttt{unixcoder-base}, \texttt{graphcodebert-base} for Tier~2);
+sequence length 512; batch size 32 (per-environment for DG);
+AdamW, lr $2\times10^{-5}$, weight decay $10^{-2}$; 10 epochs,
+early stopping on validation PR-AUC; IRM $\lambda_{\max}{=}10$,
+warm-up 1 epoch; GroupDRO/CC-DRO $\eta_q{=}0.01$; CC-DRO
+$\lambda_{\text{inv}}{=}1$ (ablated in $\{0,0.1,1,10\}$), warm-up 1
+epoch; pseudo-domain $C{=}5$. All runs fit a single 24~GB GPU.
+
+\subsection{Metrics}
+PR-AUC (primary), F1 at the validation-tuned threshold, recall at
+precision $\ge0.5$ (R@P50), ROC-AUC, and worst-project F1.
+Following~\cite{reveal} we also report the per-project F1 range.
+
+%==============================================================
+\section{Expected Results (Illustrative)}
+\label{sec:results}
+\notice{Every number in this section is a placeholder obtained by
+running the released pipeline on tiny synthetic data, included only
+to show the reporting format and verify the analysis scripts
+end-to-end. These are \emph{not} measured results on MegaVul.
+Replace them with the output of \texttt{run\_full\_sweep.sh} before
+drawing any conclusion or submitting.}
+
+Tables~\ref{tab:main}--\ref{tab:backbone} illustrate the intended
+presentation and the hypothesised direction of effects
+(CC-DRO $\ge$ class-blind DG $\ge$ DA $\ge$ ERM on cross-project
+PR-AUC, and a smaller vulnerability-recall gap for CC-DRO). They do
+not constitute evidence until the experiments are executed.
+
+\begin{table}[t]
+\centering
+\caption{Leave-one-project-out results on MegaVul (CodeBERT),
+mean over 10 folds (each averaged over seeds). PR-AUC is primary;
+worst-F1 is the robustness number. $^\dagger$ uses unlabelled
+target data. \emph{Illustrative placeholders --- not measured.}}
+\label{tab:main}
+\begin{tabular}{lcccc}
+\toprule
+Method & PR-AUC & F1$_{\text{thr}}$ & R@P50 & worst-F1 \\
+\midrule
+ERM-FT             & --- & --- & --- & --- \\
+DA-CORAL$^\dagger$ & --- & --- & --- & --- \\
+DA-DANN$^\dagger$  & --- & --- & --- & --- \\
+IRM                & --- & --- & --- & --- \\
+GroupDRO           & --- & --- & --- & --- \\
+\textbf{CC-DRO (ours)} & --- & --- & --- & --- \\
+PD+DRO             & --- & --- & --- & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[t]
+\centering
+\caption{RQ3: cross-project vulnerability-recall gap (max$-$min
+per-project recall at the tuned threshold; lower is better) and
+mean vulnerability recall. \emph{Placeholders --- not measured.}}
+\label{tab:gap}
+\begin{tabular}{lcc}
+\toprule
+Method & Recall gap $\downarrow$ & Mean recall $\uparrow$ \\
+\midrule
+IRM      & --- & --- \\
+GroupDRO & --- & --- \\
+\textbf{CC-DRO (ours)} & --- & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[t]
+\centering
+\caption{Seen vs.\ unseen project F1 (averaged over the 10 LOPO
+folds). \emph{Placeholders --- not measured.}}
+\label{tab:seen}
+\begin{tabular}{lcc}
+\toprule
+Method & Seen F1 & Unseen F1 \\
+\midrule
+ERM-FT & --- & --- \\
+\textbf{CC-DRO (ours)} & --- & --- \\
+$\Delta$ & --- & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{table}[t]
+\centering
+\caption{RQ5: backbone generality (PR-AUC, mean over 10 folds).
+\emph{Placeholders --- not measured.}}
+\label{tab:backbone}
+\begin{tabular}{lccc}
+\toprule
+Backbone & ERM-FT & GroupDRO & \textbf{CC-DRO} \\
+\midrule
+CodeBERT      & --- & --- & --- \\
+GraphCodeBERT & --- & --- & --- \\
+UniXcoder     & --- & --- & --- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[t]
+\centering
+\fbox{\parbox{0.92\columnwidth}{\centering\footnotesize
+\vspace{18pt} \emph{Fig.~1 placeholder:} ablation of CC-DRO
+$\lambda_{\text{inv}}\!\in\!\{0,0.1,1,10\}$ (PR-AUC and recall gap)
+and pseudo-domain count $C\!\in\!\{0,2,5,10,20\}$. \vspace{18pt}}}
+\caption{Planned ablations; curves are schematic until measured.}
+\label{fig:abl}
+\end{figure}
+
+\subsection{RQ1: DG vs.\ ERM}
+Table~\ref{tab:main} shows the intended LOPO summary, with
+placeholders consistent with the hypothesis that robust DG (and
+CC-DRO in particular) improves cross-project PR-AUC over ERM.
+
+\subsection{RQ2: DG vs.\ DA}
+The key question is whether DG can match DA despite seeing no
+target labels. The placeholders encode the hypothesised outcome
+(DG $\ge$ DA); a plausible mechanism, if confirmed, is that with
+many natural source domains, invariance objectives extract more
+transferable signal than adversarial alignment to a single target.
+
+\subsection{RQ3: Vulnerability-recall gap (core)}
+Table~\ref{tab:gap} is the central evaluation: we expect CC-DRO to
+reduce the per-project recall gap relative to class-blind IRM and
+GroupDRO, by construction of its class-conditional groups and
+positive-class invariance penalty (Eq.~\ref{eq:ccdro}).
+
+\subsection{RQ4: Seen vs.\ unseen trade-off}
+Table~\ref{tab:seen} reports the hypothesised small seen-project
+regression in exchange for a larger unseen-project gain.
+
+\subsection{RQ5: Backbone generality}
+Table~\ref{tab:backbone} tests whether the CC-DRO gain holds, in
+direction, across CodeBERT, GraphCodeBERT, and UniXcoder.
+
+%==============================================================
+\section{Discussion}
+\noindent\textbf{Why might class-conditioning help?}
+Under heavy imbalance, a domain-only robust objective can satisfy
+its worst-case constraint through the majority class. Conditioning
+groups on class forces the optimiser to confront the
+\emph{(project, vulnerable)} cells directly, and the positive-risk
+variance term discourages solutions that detect vulnerabilities
+well on some projects and poorly on others. Whether this
+materialises on MegaVul is an empirical question.
+
+\noindent\textbf{Practical implications (if confirmed).}
+Tools shipped to many customer codebases face exactly the DG
+setting. If the hypotheses hold, practitioners should (i) gather as
+many distinct source projects as possible, (ii) prefer
+class-conditional robust objectives under imbalance, and (iii)
+accept a small seen-project regression for substantial
+unseen-project gains in vulnerability recall.
+
+\noindent\textbf{Threats to validity.}
+\emph{Internal:} IRM/DRO are hyperparameter-sensitive; we report
+mean $\pm$ std and provide CC-DRO ablations. \emph{External:}
+findings are bound to C/C++ MegaVul; cross-language generalisation
+is future work. \emph{Construct:} MegaVul labels inherit upstream
+noise; the leakage-free DA split reduces the per-fold test size, a
+trade-off we report. \emph{Conclusion:} until the protocol is run,
+the numbers are illustrative and support no conclusions.
+
+%==============================================================
+\section{Conclusion}
+We recast cross-project SVD as a coupled domain-shift and
+class-imbalance problem and proposed \textbf{CC-DRO}, a
+class-conditional robust DG objective with a cross-project
+positive-class invariance penalty. Within a reproducible LOPO
+protocol on MegaVul --- shared imbalanced-data treatment, PR-AUC
+primary metric, leakage-free DA comparison, and three backbones ---
+the study will test whether class-conditioning narrows the
+cross-project vulnerability-recall gap left by class-blind DG, and
+whether DG can rival DA without target access. It complements
+cluster-based DG (CEVD~\cite{cevd}) and the data-centric VulGate
+effort~\cite{vulgate}. Future work includes cross-language
+settings, causal feature discovery, and combining DG with
+retrieval-augmented LLM detectors.
+
+%==============================================================
+\section*{Data and Code Availability}
+Pre-processed splits, training pipelines, and evaluation scripts
+are available at \url{https://github.com/anonymous/crossvul-dg}
+(anonymised for review).
+
+%==============================================================
+\begin{thebibliography}{00}
+\bibitem{cevd} J. Liu, ``CEVD: Cluster-based ensemble learning for cross-project vulnerability detection,'' \emph{Future Internet}, vol.~18, no.~2, p.~85, 2026.
+\bibitem{vuldeepecker} Z. Li, D. Zou, S. Xu, X. Ou, H. Jin, S. Wang, Z. Deng, and Y. Zhong, ``VulDeePecker: A deep learning-based system for vulnerability detection,'' in \emph{Proc. NDSS}, 2018.
+\bibitem{devign} Y. Zhou, S. Liu, J. Siow, X. Du, and Y. Liu, ``Devign: Effective vulnerability identification by learning comprehensive program semantics via graph neural networks,'' in \emph{NeurIPS}, 2019.
+\bibitem{linevul} M. Fu and C. Tantithamthavorn, ``LineVul: A transformer-based line-level vulnerability prediction,'' in \emph{Proc. MSR}, 2022, pp. 608--620.
+\bibitem{vulberta} H. Hanif and S. Maffeis, ``VulBERTa: Simplified source code pre-training for vulnerability detection,'' in \emph{Proc. IJCNN}, 2022.
+\bibitem{reveal} S. Chakraborty, R. Krishna, Y. Ding, and B. Ray, ``Deep learning based vulnerability detection: Are we there yet?'' \emph{IEEE Trans. Softw. Eng.}, vol.~48, no.~9, pp.~3280--3296, 2022.
+\bibitem{steenhoek} B. Steenhoek, M. M. Rahman, R. Jiles, and W. Le, ``An empirical study of deep learning models for vulnerability detection,'' in \emph{Proc. ICSE}, 2023, pp.~2237--2248.
+\bibitem{dann} Y. Ganin and V. Lempitsky, ``Unsupervised domain adaptation by backpropagation,'' in \emph{ICML}, 2015, pp.~1180--1189.
+\bibitem{coral} B. Sun and K. Saenko, ``Deep CORAL: Correlation alignment for deep domain adaptation,'' in \emph{ECCV Workshops}, 2016, pp.~443--450.
+\bibitem{irm} M. Arjovsky, L. Bottou, I. Gulrajani, and D. Lopez-Paz, ``Invariant risk minimization,'' \emph{arXiv:1907.02893}, 2019.
+\bibitem{dro} S. Sagawa, P. W. Koh, T. B. Hashimoto, and P. Liang, ``Distributionally robust neural networks for group shifts,'' in \emph{ICLR}, 2020.
+\bibitem{muandet} K. Muandet, D. Balduzzi, and B. Sch\"olkopf, ``Domain generalization via invariant feature representation,'' in \emph{ICML}, 2013, pp.~10--18.
+\bibitem{megavul} C. Ni, L. Shen, X. Yang, Y. Zhu, and S. Wang, ``MegaVul: A C/C++ vulnerability dataset with comprehensive code representations,'' in \emph{Proc. MSR}. IEEE, 2024, pp.~738--742.
+\bibitem{codebert} Z. Feng, D. Guo, D. Tang, N. Duan, X. Feng, M. Gong, L. Shou, B. Qin, T. Liu, D. Jiang, and M. Zhou, ``CodeBERT: A pre-trained model for programming and natural languages,'' in \emph{Findings of EMNLP}, 2020, pp.~1536--1547.
+\bibitem{graphcodebert} D. Guo, S. Ren, S. Lu, Z. Feng, D. Tang, S. Liu, L. Zhou, N. Duan, A. Svyatkovskiy, S. Fu et al., ``GraphCodeBERT: Pre-training code representations with data flow,'' in \emph{ICLR}, 2021.
+\bibitem{unixcoder} D. Guo, S. Lu, N. Duan, Y. Wang, M. Zhou, and J. Yin, ``UniXcoder: Unified cross-modal pre-training for code representation,'' in \emph{Proc. ACL}, 2022, pp.~7212--7225.
+\bibitem{vulbench} Z. Gao, H. Wang, Y. Zhou, W. Zhu, and C. Zhang, ``How far have we gone in vulnerability detection using large language models,'' \emph{arXiv:2311.12420}, 2023.
+\bibitem{vulgate} R. Safdar, D. Mateen, S. T. Ali, U. Ashfaq, and W. Hussain, ``Data and context matter: Towards generalizing AI-based software vulnerability detection,'' \emph{arXiv:2508.16625}, 2025.
+\bibitem{fish} Y. Shi, J. Seely, P. Torr, N. Siddharth, A. Hannun, N. Usunier, and G. Synnaeve, ``Gradient matching for domain generalization,'' in \emph{ICLR}, 2022.
+\bibitem{dgsurvey1} K. Zhou, Z. Liu, Y. Qiao, T. Xiang, and C. C. Loy, ``Domain generalization: A survey,'' \emph{IEEE Trans. Pattern Anal. Mach. Intell.}, vol.~45, no.~4, pp.~4396--4415, 2023.
+\bibitem{dgsurvey2} J. Wang, C. Lan, C. Liu, Y. Ouyang, T. Qin, W. Lu, Y. Chen, W. Zeng, and P. S. Yu, ``Generalizing to unseen domains: A survey on domain generalization,'' \emph{IEEE Trans. Knowl. Data Eng.}, vol.~35, no.~8, pp.~8052--8072, 2023.
+\end{thebibliography}
+
+\end{document}
