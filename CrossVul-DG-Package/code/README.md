@@ -62,7 +62,9 @@ on its positive samples. See `src/losses.py` and `src/trainers.py`.
 Because MegaVul is kept at its natural ≈1:19 ratio, all methods share:
 
 - **Weighted BCE** with `pos_weight = N_neg/N_pos` on the training fold
-  (`src/data.compute_pos_weight`, capped for stability).
+  (`src/data.compute_pos_weight`, capped for stability) for class-blind methods.
+  CC-DRO instead uses class-balanced environment batches and unweighted
+  within-cell risks by default, avoiding duplicate imbalance correction.
 - **PR-AUC for model selection** on val (threshold-free; val-F1@0.5 is unreliable
   under imbalance).
 - **Decision threshold tuned on val** (max-F1), then applied unchanged at test —

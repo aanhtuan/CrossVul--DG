@@ -5,15 +5,36 @@
 
 set -euo pipefail
 
-PROJECTS=(linux chromium ffmpeg qemu php-src imagemagick openssl tensorflow wireshark systemd)
 METHODS=(erm da-coral da-dann irm dro cc-dro pd-dro)
 SEEDS=(0 1 2)
 
-DATA=data/processed/top10.parquet
-TAIL=data/processed/tail.parquet
-CFG=configs/default.yaml
+PROCESSED_DIR=${PROCESSED_DIR:-data/processed}
+DATA=${DATA:-${PROCESSED_DIR}/top10.parquet}
+TAIL=${TAIL:-${PROCESSED_DIR}/tail.parquet}
+SPLITS=${SPLITS:-${PROCESSED_DIR}/splits.json}
+CFG=${CFG:-configs/default.yaml}
 BACKBONE=microsoft/codebert-base
-OUT_ROOT=runs
+OUT_ROOT=${RUNS_DIR:-runs}
+
+if [[ -n "${PROJECTS:-}" ]]; then
+  read -r -a PROJECTS <<< "${PROJECTS}"
+elif [[ -f "${SPLITS}" ]]; then
+  mapfile -t PROJECTS < <(
+    python -c "import json; print(*json.load(open('${SPLITS}', encoding='utf-8'))['top_project_counts'].keys(), sep='\n')"
+  )
+else
+  echo "Missing ${SPLITS}. Run preprocessing first or set PROJECTS=\"proj1 proj2 ...\"." >&2
+  exit 1
+fi
+
+if [[ ! -f "${DATA}" ]]; then
+  echo "Missing ${DATA}. Set PROCESSED_DIR to the folder containing top10.parquet." >&2
+  exit 1
+fi
+if [[ " ${METHODS[*]} " == *" pd-dro "* && ! -f "${TAIL}" ]]; then
+  echo "Missing ${TAIL}. pd-dro needs tail.parquet from preprocessing." >&2
+  exit 1
+fi
 
 for method in "${METHODS[@]}"; do
   for proj in "${PROJECTS[@]}"; do
@@ -33,4 +54,6 @@ for method in "${METHODS[@]}"; do
   done
 done
 
-python scripts/aggregate_results.py --runs_dir "${OUT_ROOT}" --out paper_tables/
+python scripts/aggregate_results.py --runs_dir "${OUT_ROOT}" --out paper_tables/ \
+  --expected_folds "${#PROJECTS[@]}" --expected_seeds "${#SEEDS[@]}" \
+  --backbone_filter codebert-base

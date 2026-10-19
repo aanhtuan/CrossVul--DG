@@ -21,14 +21,17 @@ from __future__ import annotations
 
 import argparse
 from pathlib import Path
+import sys
 
 import pandas as pd
 import torch
-from transformers import AutoTokenizer
+from transformers import AutoTokenizer  # type: ignore[import]
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from src.data import (
     build_dataloaders, build_env_loaders, compute_pos_weight, load_processed,
-    lopo_fold, split_held_out,
+    lopo_fold, split_held_out, validate_lopo_frames,
 )
 from src.evaluate import compute_metrics, tune_threshold
 from src.models import EncoderClassifier
@@ -75,6 +78,8 @@ def main():
     # Split held-out project: earlier -> DA target (unlabelled), later -> test.
     target_ratio = cfg["da"].get("target_ratio", 0.5)
     da_target_df, test_df = split_held_out(held_df, target_ratio=target_ratio)
+    source_stats = validate_lopo_frames(
+        train_df, val_df, test_df, require_source_cells=args.method == "cc-dro")
     log.info(f"train={len(train_df)} val={len(val_df)} "
              f"da_target={len(da_target_df)} test={len(test_df)} "
              f"(held_out={args.held_out})")
@@ -98,6 +103,9 @@ def main():
         max_length=cfg["encoder"]["max_length"],
         num_workers=cfg["train"]["num_workers"],
         project_to_id=project_to_id,
+        class_balanced=(args.method == "cc-dro" and
+                        cfg["cc_dro"].get("balanced_batches", True)),
+        seed=args.seed,
     )
     log.info(f"Built {len(env_loaders)} environment loaders.")
 
@@ -113,6 +121,15 @@ def main():
             raise SystemExit("--tail_path required for pd-dro")
         from src.pseudo_domains import cluster_tail_projects
         tail_df = load_processed(args.tail_path)
+        # Preserve temporal realism: auxiliary domains must not contain code
+        # committed after the latest source-training sample in this fold.
+        source_cutoff = train_df["commit_date"].max()
+        tail_df = tail_df[tail_df["commit_date"] <= source_cutoff].reset_index(drop=True)
+        if tail_df["project"].nunique() < cfg["pseudo"]["n_clusters"]:
+            raise ValueError(
+                "Not enough temporally eligible tail projects for pd-dro: "
+                f"{tail_df['project'].nunique()} projects for "
+                f"{cfg['pseudo']['n_clusters']} clusters")
         log.info(f"Clustering {tail_df['project'].nunique()} tail projects "
                  f"into {cfg['pseudo']['n_clusters']} pseudo-domains.")
         tail_map = cluster_tail_projects(
@@ -136,22 +153,36 @@ def main():
         log.info(f"After pseudo-domains: {len(env_loaders)} envs, "
                  f"pos_weight={pos_weight:.2f}")
 
+    effective_pos_weight = (
+        pos_weight if args.method != "cc-dro" or
+        cfg["cc_dro"].get("use_pos_weight", False) else 1.0
+    )
+    if effective_pos_weight != pos_weight:
+        log.info("CC-DRO uses unweighted within-cell BCE; class balance is handled by cells.")
+
     tcfg = TrainerConfig(
         method=args.method,
         epochs=cfg["train"]["epochs"],
         lr=cfg["train"]["lr"],
         weight_decay=cfg["train"]["weight_decay"],
+        warmup_steps=cfg["train"].get("warmup_steps", 0),
         grad_clip=cfg["train"]["grad_clip"],
         early_stopping_patience=cfg["train"]["early_stopping_patience"],
         monitor=cfg["train"].get("monitor", "pr_auc"),
-        pos_weight=pos_weight,
+        pos_weight=effective_pos_weight,
         irm_lambda_max=cfg["irm"]["lambda_max"],
         irm_warmup_epochs=cfg["irm"]["warmup_epochs"],
         dro_eta_q=cfg["dro"]["eta_q"],
+        cc_eta_q=cfg["cc_dro"]["eta_q"],
         cc_lambda_inv=cfg["cc_dro"]["lambda_inv"],
         cc_warmup_epochs=cfg["cc_dro"]["warmup_epochs"],
         coral_weight=cfg["da"]["coral_weight"],
         dann_lambda=cfg["da"]["dann_lambda"],
+        checkpoint_path=str(
+            cfg["train"].get("checkpoint_path")
+            or (args.output_dir / "checkpoint.pt")
+        ),
+        resume=cfg["train"].get("resume", True),
     )
 
     # DA baselines: build an unlabelled target loader from the EARLIER portion
@@ -181,9 +212,13 @@ def main():
     args.output_dir.mkdir(parents=True, exist_ok=True)
     save_json({
         "args": vars(args) | {"backbone": cfg["encoder"]["name"],
-                              "pos_weight": pos_weight,
+                              "train_pos_weight": pos_weight,
+                              "effective_pos_weight": effective_pos_weight,
+                              "pos_weight": effective_pos_weight,
                               "tuned_threshold": best_thr,
-                              "project_to_id": project_to_id},
+                              "project_to_id": project_to_id,
+                              "source_project_counts": source_stats,
+                              "resolved_config": cfg},
         "val": val_metrics,
         "test": test_metrics,
     }, args.output_dir / "results.json")

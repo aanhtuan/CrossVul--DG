@@ -140,10 +140,13 @@ class CCDROState:
     def weighted_loss(self, cell_losses: Dict[Tuple[int, int], torch.Tensor]
                       ) -> torch.Tensor:
         terms = []
+        present_weights = []
         for key, loss in cell_losses.items():
             self._ensure(key)
             terms.append(self.q[key] * loss)
-        return torch.stack(terms).sum()
+            present_weights.append(self.q[key])
+        denom = torch.stack(present_weights).sum().clamp_min(1e-12)
+        return torch.stack(terms).sum() / denom
 
     def weights_snapshot(self) -> Dict[str, float]:
         return {f"p{p}_c{c}": float(v.detach().cpu())

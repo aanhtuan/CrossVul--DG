@@ -52,6 +52,11 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--runs_dir", type=Path, required=True)
     ap.add_argument("--out", type=Path, default=Path("paper_tables"))
+    ap.add_argument("--expected_folds", type=int, default=10)
+    ap.add_argument("--expected_seeds", type=int, default=3)
+    ap.add_argument("--allow_incomplete", action="store_true")
+    ap.add_argument("--backbone_filter", nargs="*", default=None,
+                    help="Backbone basenames to include, e.g. codebert-base")
     args = ap.parse_args()
     args.out.mkdir(parents=True, exist_ok=True)
 
@@ -62,7 +67,12 @@ def main():
             r = json.load(f)
         a = r["args"]
         backbone = a.get("backbone", "microsoft/codebert-base").split("/")[-1]
+        if args.backbone_filter and backbone not in args.backbone_filter:
+            continue
         bucket[backbone][a["method"]][a["held_out"]][a["seed"]] = r["test"]
+
+    if not bucket:
+        raise SystemExit("No matching results.json files found")
 
     summary = {}
     for backbone, methods in bucket.items():
@@ -74,6 +84,18 @@ def main():
         for method in [m for m in METHOD_ORDER if m in methods] + \
                       [m for m in methods if m not in METHOD_ORDER]:
             folds = methods[method]
+            incomplete = []
+            if len(folds) < args.expected_folds:
+                incomplete.append(f"{len(folds)}/{args.expected_folds} folds")
+            short_folds = {held: len(seeds) for held, seeds in folds.items()
+                           if len(seeds) < args.expected_seeds}
+            if short_folds:
+                incomplete.append(f"seeds per fold {short_folds}")
+            if incomplete:
+                message = f"Incomplete results for {backbone}/{method}: " + "; ".join(incomplete)
+                if not args.allow_incomplete:
+                    raise SystemExit(message + " (use --allow_incomplete for exploratory output)")
+                print(f"WARNING: {message}")
             line = f"{method:<18}"
             row = {}
             for metric in METRICS:

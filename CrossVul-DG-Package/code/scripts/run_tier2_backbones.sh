@@ -5,7 +5,6 @@
 
 set -euo pipefail
 
-PROJECTS=(linux chromium ffmpeg qemu php-src imagemagick openssl tensorflow wireshark systemd)
 METHODS=(erm dro cc-dro)
 SEEDS=(0 1)
 declare -A BACKBONES=(
@@ -13,9 +12,27 @@ declare -A BACKBONES=(
   [graphcodebert]="microsoft/graphcodebert-base"
 )
 
-DATA=data/processed/top10.parquet
-CFG=configs/default.yaml
-OUT_ROOT=runs
+PROCESSED_DIR=${PROCESSED_DIR:-data/processed}
+DATA=${DATA:-${PROCESSED_DIR}/top10.parquet}
+SPLITS=${SPLITS:-${PROCESSED_DIR}/splits.json}
+CFG=${CFG:-configs/default.yaml}
+OUT_ROOT=${RUNS_DIR:-runs}
+
+if [[ -n "${PROJECTS:-}" ]]; then
+  read -r -a PROJECTS <<< "${PROJECTS}"
+elif [[ -f "${SPLITS}" ]]; then
+  mapfile -t PROJECTS < <(
+    python -c "import json; print(*json.load(open('${SPLITS}', encoding='utf-8'))['top_project_counts'].keys(), sep='\n')"
+  )
+else
+  echo "Missing ${SPLITS}. Run preprocessing first or set PROJECTS=\"proj1 proj2 ...\"." >&2
+  exit 1
+fi
+
+if [[ ! -f "${DATA}" ]]; then
+  echo "Missing ${DATA}. Set PROCESSED_DIR to the folder containing top10.parquet." >&2
+  exit 1
+fi
 
 for bb_key in "${!BACKBONES[@]}"; do
   bb="${BACKBONES[$bb_key]}"
@@ -34,4 +51,6 @@ for bb_key in "${!BACKBONES[@]}"; do
   done
 done
 
-python scripts/aggregate_results.py --runs_dir "${OUT_ROOT}" --out paper_tables/
+python scripts/aggregate_results.py --runs_dir "${OUT_ROOT}" --out paper_tables/tier2/ \
+  --expected_folds "${#PROJECTS[@]}" --expected_seeds "${#SEEDS[@]}" \
+  --backbone_filter unixcoder-base graphcodebert-base

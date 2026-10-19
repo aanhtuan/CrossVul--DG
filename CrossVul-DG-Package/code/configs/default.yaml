@@ -25,16 +25,16 @@ eval:
 irm:
   lambda_max: 10.0
   warmup_epochs: 1
-  l2_reg_coef: 1.0e-3
 
 dro:                      # project-level GroupDRO baseline
   eta_q: 0.01
-  q_init: uniform
 
 cc_dro:                   # proposed: class-conditional DRO + positive-class invariance
-  eta_q: 0.01             # exp-gradient LR over (project x class) cells (reuses dro.eta_q semantics)
+  eta_q: 0.01             # exp-gradient LR over (project x class) cells
   lambda_inv: 1.0         # weight of the cross-project positive-risk variance penalty
   warmup_epochs: 1        # ramp lambda_inv after this many epochs
+  balanced_batches: true  # ensure every project batch contains both classes
+  use_pos_weight: false   # cells already correct class imbalance; avoid double weighting
 
 da:                       # domain-adaptation baselines (use UNLABELLED target)
   coral_weight: 1.0
@@ -51,7 +51,3 @@ data:
   val_ratio: 0.1
   test_ratio: 0.1
   dedup: true             # drop functions whose hash collides
-
-logging:
-  log_every: 50
-  save_best_only: true

@@ -113,13 +113,25 @@ def _parse_commit_date(value):
 
     return parsed
 def _row_from_dict(record: dict[str, Any]) -> dict[str, Any] | None:
-    func = _first_present(record, [
-        "func", "func_before", "function", "code", "function_before",
-        "before_func", "before_code",
-    ])
     label = _parse_label(_first_present(record, [
         "label", "is_vul", "vul", "vulnerable", "target", "is_vulnerable",
     ]))
+    if label is None:
+        return None
+
+    if label == 1:
+        # For vulnerable MegaVul entries, func_before is the buggy version;
+        # func is often the post-fix version and should not be paired with
+        # the vulnerable label.
+        func = _first_present(record, [
+            "func_before", "function_before", "before_func", "before_code",
+            "func", "function", "code",
+        ])
+    else:
+        func = _first_present(record, [
+            "func", "function", "code", "func_before", "function_before",
+            "before_func", "before_code",
+        ])
     project = _project_name(_first_present(record, [
         "project", "repo", "repository", "project_name",
         "repo_name", "repository_name",
@@ -129,7 +141,7 @@ def _row_from_dict(record: dict[str, Any]) -> dict[str, Any] | None:
         "commit_datetime", "commit_timestamp", "author_date", "committer_date",
     ])
 
-    if func is None or label is None or project is None or commit_date is None:
+    if func is None or project is None or commit_date is None:
         return None
 
     func = str(func).strip()
@@ -441,6 +453,10 @@ def _process_parts(
                 "SHA-256 of comment-stripped and whitespace-normalized code; "
                 "earliest chronological occurrence retained."
                 if dedup else "Disabled"
+            ),
+            "function_column_policy": (
+                "Positive/vulnerable rows prefer func_before/function_before; "
+                "negative rows prefer func/function/code."
             ),
         }
         with splits_path.open("w", encoding="utf-8") as handle:

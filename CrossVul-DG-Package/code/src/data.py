@@ -18,7 +18,7 @@ from typing import Iterable, List, Optional, Sequence, Tuple
 import numpy as np
 import pandas as pd
 import torch
-from torch.utils.data import DataLoader, Dataset
+from torch.utils.data import BatchSampler, DataLoader, Dataset
 
 # Columns we expect after preprocessing.
 REQUIRED_COLUMNS = ("func", "label", "project", "commit_date")
@@ -189,6 +189,38 @@ class MegaVulDataset(Dataset):
         }
 
 
+class ClassBalancedBatchSampler(BatchSampler):
+    """Build batches containing both classes, oversampling the rare class."""
+
+    def __init__(self, labels: Sequence[int], batch_size: int, seed: int = 0):
+        if batch_size < 2:
+            raise ValueError("Class-balanced batches require batch_size >= 2")
+        labels = np.asarray(labels, dtype=int)
+        self.negative = np.flatnonzero(labels == 0)
+        self.positive = np.flatnonzero(labels == 1)
+        if not len(self.negative) or not len(self.positive):
+            raise ValueError("Class-balanced batches require both classes")
+        self.batch_size = batch_size
+        self.seed = seed
+        self.epoch = 0
+        self.n_batches = max(1, int(np.ceil(len(labels) / batch_size)))
+
+    def __len__(self) -> int:
+        return self.n_batches
+
+    def __iter__(self):
+        rng = np.random.default_rng(self.seed + self.epoch)
+        self.epoch += 1
+        n_pos = max(1, self.batch_size // 2)
+        n_neg = self.batch_size - n_pos
+        for _ in range(self.n_batches):
+            pos = rng.choice(self.positive, size=n_pos, replace=len(self.positive) < n_pos)
+            neg = rng.choice(self.negative, size=n_neg, replace=len(self.negative) < n_neg)
+            batch = np.concatenate([pos, neg])
+            rng.shuffle(batch)
+            yield batch.tolist()
+
+
 def build_dataloaders(train_df, val_df, test_df, tokenizer, batch_size: int,
                       max_length: int = 512, num_workers: int = 2
                       ) -> Tuple[DataLoader, DataLoader, DataLoader, dict[str, int]]:
@@ -207,7 +239,8 @@ def build_dataloaders(train_df, val_df, test_df, tokenizer, batch_size: int,
 
 def build_env_loaders(train_df: pd.DataFrame, tokenizer, batch_size: int,
                       max_length: int = 512, num_workers: int = 2,
-                      project_to_id: Optional[dict[str, int]] = None
+                      project_to_id: Optional[dict[str, int]] = None,
+                      class_balanced: bool = False, seed: int = 0,
                       ) -> List[DataLoader]:
     """One DataLoader per project (= environment) for DG methods."""
     if project_to_id is None:
@@ -218,6 +251,35 @@ def build_env_loaders(train_df: pd.DataFrame, tokenizer, batch_size: int,
         if len(sub) == 0:
             continue
         ds = MegaVulDataset(sub, tokenizer, max_length, project_to_id)
-        loaders.append(DataLoader(ds, batch_size=batch_size, shuffle=True,
-                                  num_workers=num_workers))
+        if class_balanced:
+            sampler = ClassBalancedBatchSampler(
+                sub["label"].astype(int).tolist(), batch_size, seed + len(loaders))
+            loaders.append(DataLoader(ds, batch_sampler=sampler,
+                                      num_workers=num_workers))
+        else:
+            loaders.append(DataLoader(ds, batch_size=batch_size, shuffle=True,
+                                      num_workers=num_workers))
     return loaders
+
+
+def validate_lopo_frames(train_df: pd.DataFrame, val_df: pd.DataFrame,
+                         test_df: pd.DataFrame, *, require_source_cells: bool = False
+                         ) -> dict:
+    """Validate that a LOPO fold can produce meaningful binary metrics."""
+    errors = []
+    for name, frame in (("train", train_df), ("validation", val_df), ("test", test_df)):
+        counts = frame["label"].value_counts().to_dict()
+        if frame.empty:
+            errors.append(f"{name} split is empty")
+        if not {0, 1}.issubset(counts):
+            errors.append(f"{name} split must contain labels 0 and 1; got {counts}")
+    project_counts = {}
+    for project, frame in train_df.groupby("project"):
+        counts = frame["label"].value_counts().to_dict()
+        project_counts[str(project)] = {"n": len(frame), "negative": counts.get(0, 0),
+                                        "positive": counts.get(1, 0)}
+        if require_source_cells and not {0, 1}.issubset(counts):
+            errors.append(f"source project {project!r} lacks one class: {counts}")
+    if errors:
+        raise ValueError("Invalid LOPO fold:\n- " + "\n- ".join(errors))
+    return project_counts
