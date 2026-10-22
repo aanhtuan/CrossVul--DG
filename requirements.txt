@@ -1,0 +1,13 @@
+torch>=2.6,<3
+transformers>=4.40,<5
+scikit-learn>=1.4,<2
+numpy>=1.26,<3
+pandas>=2.2,<4
+pyarrow>=15,<27
+tqdm>=4.66,<5
+pyyaml>=6,<7
+matplotlib>=3.8,<4
+seaborn>=0.13,<1
+scipy>=1.11,<2
+duckdb>=1,<2
+ijson>=3.2,<4

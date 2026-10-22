@@ -1,0 +1,97 @@
+{
+  "policy": "maximum validation AP; deterministic path tie-break; test metrics not accessed",
+  "method": "cc-dro",
+  "validation_cohort_signature": "33c22c4b4e5167f0ac9aae5cd22b93710931f952cd79212f9cddbc3ac564a773",
+  "best_selection_path": "runs/real_ablations/bounded-v1/lambda01/selection.json",
+  "best_validation_ap": 0.3099452878188382,
+  "best_config": {
+    "encoder": {
+      "name": "microsoft/codebert-base",
+      "revision": "3b0952feddeffad0063f274080e3c23d75e7eb39",
+      "max_length": 128,
+      "hidden_size": 768,
+      "dropout": 0.1,
+      "gradient_checkpointing": true
+    },
+    "train": {
+      "batch_size": 2,
+      "lr": 2e-05,
+      "weight_decay": 0.01,
+      "epochs": 2,
+      "warmup_steps": 0,
+      "grad_clip": 1.0,
+      "early_stopping_patience": 2,
+      "num_workers": 0,
+      "monitor": "pr_auc",
+      "checkpoint_path": null,
+      "resume": true,
+      "device": "cuda",
+      "amp": true
+    },
+    "eval": {
+      "batch_size": 2
+    },
+    "irm": {
+      "lambda_max": 10.0,
+      "warmup_epochs": 1
+    },
+    "dro": {
+      "eta_q": 0.01
+    },
+    "cc_dro": {
+      "eta_q": 0.01,
+      "lambda_inv": 0.1,
+      "warmup_epochs": 1,
+      "balanced_batches": true,
+      "use_pos_weight": false
+    },
+    "da": {
+      "coral_weight": 1.0,
+      "dann_lambda": 0.1,
+      "target_ratio": 0.5
+    },
+    "pseudo": {
+      "n_clusters": 5,
+      "embedding_subset": 1024
+    },
+    "data": {
+      "top_k": 10,
+      "train_ratio": 0.8,
+      "val_ratio": 0.1,
+      "test_ratio": 0.1,
+      "dedup": true
+    },
+    "compute_budget": {
+      "train_per_project": 32,
+      "val_limit": 128,
+      "target_limit": 128,
+      "test_limit": 256
+    }
+  },
+  "candidates": [
+    {
+      "validation_ap": 0.22412494616911488,
+      "path": "runs/real_ablations/bounded-v1/base/selection.json"
+    },
+    {
+      "validation_ap": 0.280148804269162,
+      "path": "runs/real_ablations/bounded-v1/lambda0/selection.json"
+    },
+    {
+      "validation_ap": 0.22668403253378622,
+      "path": "runs/real_ablations/bounded-v1/lambda001/selection.json"
+    },
+    {
+      "validation_ap": 0.3099452878188382,
+      "path": "runs/real_ablations/bounded-v1/lambda01/selection.json"
+    },
+    {
+      "validation_ap": 0.2702861075690731,
+      "path": "runs/real_ablations/bounded-v1/lr1e-5/selection.json"
+    },
+    {
+      "validation_ap": 0.21515142133355034,
+      "path": "runs/real_ablations/bounded-v1/lr3e-5/selection.json"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+# Measured guarded real-data diagnostic configuration; not an optimized winner.
+encoder:
+  name: microsoft/codebert-base
+  revision: 3b0952feddeffad0063f274080e3c23d75e7eb39
+  max_length: 128
+  hidden_size: 768
+  dropout: 0.1
+  gradient_checkpointing: true
+train:
+  batch_size: 2
+  lr: 2.0e-05
+  weight_decay: 0.01
+  epochs: 2
+  warmup_steps: 0
+  grad_clip: 1.0
+  early_stopping_patience: 2
+  num_workers: 0
+  monitor: pr_auc
+  checkpoint_path: null
+  resume: true
+  device: cuda
+  amp: true
+eval:
+  batch_size: 2
+irm:
+  lambda_max: 10.0
+  warmup_epochs: 1
+dro:
+  eta_q: 0.01
+cc_dro:
+  eta_q: 0.01
+  lambda_inv: 1.0
+  warmup_epochs: 1
+  balanced_batches: true
+  use_pos_weight: false
+da:
+  coral_weight: 1.0
+  dann_lambda: 0.1
+  target_ratio: 0.5
+pseudo:
+  n_clusters: 5
+  embedding_subset: 1024
+data:
+  top_k: 10
+  train_ratio: 0.8
+  val_ratio: 0.1
+  test_ratio: 0.1
+  dedup: true

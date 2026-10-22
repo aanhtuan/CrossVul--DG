@@ -1,0 +1,26 @@
+[
+  {
+    "run": "runs/real_baselines/bounded-v1/erm",
+    "best_model_all_finite": true,
+    "optimizer_all_finite": true,
+    "completed_epoch": 1,
+    "optimizer_steps": 287,
+    "amp_skipped_steps": 1
+  },
+  {
+    "run": "runs/real_baselines/bounded-v1/cc-dro",
+    "best_model_all_finite": true,
+    "optimizer_all_finite": true,
+    "completed_epoch": 1,
+    "optimizer_steps": 32,
+    "amp_skipped_steps": 0
+  },
+  {
+    "run": "runs/real_ablations/bounded-v1/lambda01",
+    "best_model_all_finite": true,
+    "optimizer_all_finite": true,
+    "completed_epoch": 1,
+    "optimizer_steps": 32,
+    "amp_skipped_steps": 0
+  }
+]

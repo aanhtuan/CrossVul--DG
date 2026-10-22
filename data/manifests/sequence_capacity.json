@@ -1,0 +1,26 @@
+[
+  {
+    "max_length": 128,
+    "status": "PREFLIGHT_PASSED",
+    "resources": {
+      "available_ram_bytes": 7011450880,
+      "total_ram_bytes": 16354541568,
+      "swap_used_bytes": 10257702912,
+      "disk_free_bytes": 158305398784,
+      "cuda_free_bytes": 3787063296,
+      "cuda_total_bytes": 3950575616,
+      "estimated_cuda_required_bytes": 3121741824,
+      "estimate_note": "Conservative estimate; a guarded measured step is required"
+    }
+  },
+  {
+    "max_length": 256,
+    "status": "NOT_RUN_PREFLIGHT_REJECTED",
+    "reason": "CUDA preflight rejected: free=3787063296, estimated_required=4732354560; reduce length or use larger GPU"
+  },
+  {
+    "max_length": 512,
+    "status": "NOT_RUN_PREFLIGHT_REJECTED",
+    "reason": "CUDA preflight rejected: free=3787063296, estimated_required=11174805504; reduce length or use larger GPU"
+  }
+]
