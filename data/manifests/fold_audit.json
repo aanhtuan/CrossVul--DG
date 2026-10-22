@@ -1,0 +1,1116 @@
+{
+  "data": {
+    "sha256": "7e5cf01cf80b7057801294aba239f72361266f3a06fc3e8a0434e2695741f219",
+    "manifest_signature": "5d9f3aca706f4294bbe2b8d4fb2264a2b5d7ae96ff2e204f9c40295d49eb7434",
+    "protocol": "megavul-v2-strict-before-global-quarantine-temporal-purge",
+    "input_hashes": [
+      {
+        "name": "megavul.json",
+        "size_bytes": 2668796982,
+        "sha256": "eabe8d3325be358d7a93327e3ae4f001725517a0067c4d80198f89904177419f"
+      }
+    ]
+  },
+  "folds": {
+    "android": {
+      "before_final_purge": [
+        142462,
+        13354,
+        3475,
+        3320
+      ],
+      "after_final_purge": [
+        142462,
+        13354,
+        3475,
+        3320
+      ],
+      "source_training_after_test_start": true,
+      "chronology_scope": "strict source train<validation and target<test; cross-project test is historical LOPO, not forward-in-time evaluation",
+      "source_cells": {
+        "chromium": {
+          "n": 22505,
+          "negative": 21704,
+          "positive": 801
+        },
+        "ffmpeg": {
+          "n": 5150,
+          "negative": 4782,
+          "positive": 368
+        },
+        "gpac": {
+          "n": 7311,
+          "negative": 7071,
+          "positive": 240
+        },
+        "radareorg/radare2": {
+          "n": 3592,
+          "negative": 3424,
+          "positive": 168
+        },
+        "tensorflow": {
+          "n": 3014,
+          "negative": 2740,
+          "positive": 274
+        },
+        "torvalds/linux": {
+          "n": 72192,
+          "negative": 69187,
+          "positive": 3005
+        },
+        "vim": {
+          "n": 3319,
+          "negative": 3170,
+          "positive": 149
+        },
+        "wireshark": {
+          "n": 19557,
+          "negative": 18956,
+          "positive": 601
+        },
+        "xen-project/xen": {
+          "n": 5822,
+          "negative": 5348,
+          "positive": 474
+        }
+      },
+      "partitions": {
+        "train": {
+          "n": 142462,
+          "positive": 6080,
+          "negative": 136382,
+          "positive_rate": 0.042678047479327824,
+          "min_date": "2005-04-25 03:16:19+00:00",
+          "max_date": "2022-07-09 05:02:10+00:00"
+        },
+        "validation": {
+          "n": 13354,
+          "positive": 669,
+          "negative": 12685,
+          "positive_rate": 0.05009734910888124,
+          "min_date": "2022-07-12 07:57:03+00:00",
+          "max_date": "2024-01-24 06:37:02+00:00"
+        },
+        "target": {
+          "n": 3475,
+          "positive": 262,
+          "negative": 3213,
+          "positive_rate": 0.07539568345323741,
+          "min_date": "2014-05-13 15:37:06+00:00",
+          "max_date": "2016-08-16 22:48:05+00:00"
+        },
+        "test": {
+          "n": 3320,
+          "positive": 174,
+          "negative": 3146,
+          "positive_rate": 0.05240963855421687,
+          "min_date": "2016-08-16 23:50:54+00:00",
+          "max_date": "2023-08-21 17:40:17+00:00"
+        }
+      },
+      "original_rows": 167470,
+      "retained_rows": 162611,
+      "excluded_rows": 4859,
+      "status": "verified"
+    },
+    "chromium": {
+      "before_final_purge": [
+        128231,
+        12162,
+        11460,
+        9102
+      ],
+      "after_final_purge": [
+        128231,
+        12162,
+        11460,
+        9102
+      ],
+      "source_training_after_test_start": true,
+      "chronology_scope": "strict source train<validation and target<test; cross-project test is historical LOPO, not forward-in-time evaluation",
+      "source_cells": {
+        "android": {
+          "n": 5320,
+          "negative": 4940,
+          "positive": 380
+        },
+        "ffmpeg": {
+          "n": 5275,
+          "negative": 4906,
+          "positive": 369
+        },
+        "gpac": {
+          "n": 7343,
+          "negative": 7091,
+          "positive": 252
+        },
+        "radareorg/radare2": {
+          "n": 3592,
+          "negative": 3424,
+          "positive": 168
+        },
+        "tensorflow": {
+          "n": 3730,
+          "negative": 3395,
+          "positive": 335
+        },
+        "torvalds/linux": {
+          "n": 73134,
+          "negative": 70072,
+          "positive": 3062
+        },
+        "vim": {
+          "n": 3998,
+          "negative": 3811,
+          "positive": 187
+        },
+        "wireshark": {
+          "n": 19618,
+          "negative": 19014,
+          "positive": 604
+        },
+        "xen-project/xen": {
+          "n": 6221,
+          "negative": 5725,
+          "positive": 496
+        }
+      },
+      "partitions": {
+        "train": {
+          "n": 128231,
+          "positive": 5853,
+          "negative": 122378,
+          "positive_rate": 0.04564418900265926,
+          "min_date": "2005-04-25 03:16:19+00:00",
+          "max_date": "2022-10-06 18:53:48+00:00"
+        },
+        "validation": {
+          "n": 12162,
+          "positive": 551,
+          "negative": 11611,
+          "positive_rate": 0.045305048511757935,
+          "min_date": "2022-10-06 18:53:49+00:00",
+          "max_date": "2024-01-24 06:37:02+00:00"
+        },
+        "target": {
+          "n": 11460,
+          "positive": 381,
+          "negative": 11079,
+          "positive_rate": 0.03324607329842932,
+          "min_date": "2008-09-10 16:15:25+00:00",
+          "max_date": "2015-03-19 07:51:55+00:00"
+        },
+        "test": {
+          "n": 9102,
+          "positive": 384,
+          "negative": 8718,
+          "positive_rate": 0.04218852999340804,
+          "min_date": "2015-03-26 23:16:44+00:00",
+          "max_date": "2016-10-10 13:47:53+00:00"
+        }
+      },
+      "original_rows": 167470,
+      "retained_rows": 160955,
+      "excluded_rows": 6515,
+      "status": "verified"
+    },
+    "ffmpeg": {
+      "before_final_purge": [
+        143526,
+        13997,
+        2667,
+        2009
+      ],
+      "after_final_purge": [
+        143526,
+        13997,
+        2667,
+        2009
+      ],
+      "source_training_after_test_start": true,
+      "chronology_scope": "strict source train<validation and target<test; cross-project test is historical LOPO, not forward-in-time evaluation",
+      "source_cells": {
+        "android": {
+          "n": 5320,
+          "negative": 4940,
+          "positive": 380
+        },
+        "chromium": {
+          "n": 22505,
+          "negative": 21704,
+          "positive": 801
+        },
+        "gpac": {
+          "n": 7334,
+          "negative": 7089,
+          "positive": 245
+        },
+        "radareorg/radare2": {
+          "n": 3592,
+          "negative": 3424,
+          "positive": 168
+        },
+        "tensorflow": {
+          "n": 3371,
+          "negative": 3058,
+          "positive": 313
+        },
+        "torvalds/linux": {
+          "n": 72354,
+          "negative": 69340,
+          "positive": 3014
+        },
+        "vim": {
+          "n": 3587,
+          "negative": 3433,
+          "positive": 154
+        },
+        "wireshark": {
+          "n": 19557,
+          "negative": 18956,
+          "positive": 601
+        },
+        "xen-project/xen": {
+          "n": 5906,
+          "negative": 5431,
+          "positive": 475
+        }
+      },
+      "partitions": {
+        "train": {
+          "n": 143526,
+          "positive": 6151,
+          "negative": 137375,
+          "positive_rate": 0.04285634658528768,
+          "min_date": "2005-04-25 03:16:19+00:00",
+          "max_date": "2022-07-29 06:28:27+00:00"
+        },
+        "validation": {
+          "n": 13997,
+          "positive": 671,
+          "negative": 13326,
+          "positive_rate": 0.04793884403800815,
+          "min_date": "2022-07-29 07:22:25+00:00",
+          "max_date": "2024-01-24 06:37:02+00:00"
+        },
+        "target": {
+          "n": 2667,
+          "positive": 214,
+          "negative": 2453,
+          "positive_rate": 0.08023997000374954,
+          "min_date": "2011-03-15 01:19:43+00:00",
+          "max_date": "2015-01-06 00:34:17+00:00"
+        },
+        "test": {
+          "n": 2009,
+          "positive": 145,
+          "negative": 1864,
+          "positive_rate": 0.07217521154803384,
+          "min_date": "2015-02-04 19:48:30+00:00",
+          "max_date": "2023-10-14 16:49:24+00:00"
+        }
+      },
+      "original_rows": 167470,
+      "retained_rows": 162199,
+      "excluded_rows": 5271,
+      "status": "verified"
+    },
+    "gpac": {
+      "before_final_purge": [
+        139763,
+        13236,
+        4919,
+        4659
+      ],
+      "after_final_purge": [
+        139763,
+        13236,
+        4919,
+        4659
+      ],
+      "source_training_after_test_start": true,
+      "chronology_scope": "strict source train<validation and target<test; cross-project test is historical LOPO, not forward-in-time evaluation",
+      "source_cells": {
+        "android": {
+          "n": 5320,
+          "negative": 4940,
+          "positive": 380
+        },
+        "chromium": {
+          "n": 22505,
+          "negative": 21704,
+          "positive": 801
+        },
+        "ffmpeg": {
+          "n": 5150,
+          "negative": 4782,
+          "positive": 368
+        },
+        "radareorg/radare2": {
+          "n": 3592,
+          "negative": 3424,
+          "positive": 168
+        },
+        "tensorflow": {
+          "n": 3014,
+          "negative": 2740,
+          "positive": 274
+        },
+        "torvalds/linux": {
+          "n": 71557,
+          "negative": 68573,
+          "positive": 2984
+        },
+        "vim": {
+          "n": 3246,
+          "negative": 3112,
+          "positive": 134
+        },
+        "wireshark": {
+          "n": 19557,
+          "negative": 18956,
+          "positive": 601
+        },
+        "xen-project/xen": {
+          "n": 5822,
+          "negative": 5348,
+          "positive": 474
+        }
+      },
+      "partitions": {
+        "train": {
+          "n": 139763,
+          "positive": 6184,
+          "negative": 133579,
+          "positive_rate": 0.04424633128939705,
+          "min_date": "2005-04-25 03:16:19+00:00",
+          "max_date": "2022-06-26 03:59:02+00:00"
+        },
+        "validation": {
+          "n": 13236,
+          "positive": 628,
+          "negative": 12608,
+          "positive_rate": 0.047446358416440015,
+          "min_date": "2022-06-26 05:04:07+00:00",
+          "max_date": "2024-01-24 06:37:02+00:00"
+        },
+        "target": {
+          "n": 4919,
+          "positive": 199,
+          "negative": 4720,
+          "positive_rate": 0.04045537710916853,
+          "min_date": "2018-03-06 02:23:31+00:00",
+          "max_date": "2021-12-14 02:34:46+00:00"
+        },
+        "test": {
+          "n": 4659,
+          "positive": 180,
+          "negative": 4479,
+          "positive_rate": 0.038634900193174504,
+          "min_date": "2021-12-15 00:49:28+00:00",
+          "max_date": "2024-01-08 02:09:38+00:00"
+        }
+      },
+      "original_rows": 167470,
+      "retained_rows": 162577,
+      "excluded_rows": 4893,
+      "status": "verified"
+    },
+    "radareorg/radare2": {
+      "before_final_purge": [
+        144631,
+        14500,
+        2122,
+        1476
+      ],
+      "after_final_purge": [
+        144631,
+        14500,
+        2122,
+        1476
+      ],
+      "source_training_after_test_start": true,
+      "chronology_scope": "strict source train<validation and target<test; cross-project test is historical LOPO, not forward-in-time evaluation",
+      "source_cells": {
+        "android": {
+          "n": 5320,
+          "negative": 4940,
+          "positive": 380
+        },
+        "chromium": {
+          "n": 22505,
+          "negative": 21704,
+          "positive": 801
+        },
+        "ffmpeg": {
+          "n": 5150,
+          "negative": 4782,
+          "positive": 368
+        },
+        "gpac": {
+          "n": 7334,
+          "negative": 7089,
+          "positive": 245
+        },
+        "tensorflow": {
+          "n": 3244,
+          "negative": 2945,
+          "positive": 299
+        },
+        "torvalds/linux": {
+          "n": 72195,
+          "negative": 69189,
+          "positive": 3006
+        },
+        "vim": {
+          "n": 3504,
+          "negative": 3352,
+          "positive": 152
+        },
+        "wireshark": {
+          "n": 19557,
+          "negative": 18956,
+          "positive": 601
+        },
+        "xen-project/xen": {
+          "n": 5822,
+          "negative": 5348,
+          "positive": 474
+        }
+      },
+      "partitions": {
+        "train": {
+          "n": 144631,
+          "positive": 6326,
+          "negative": 138305,
+          "positive_rate": 0.043738894151323024,
+          "min_date": "2005-04-25 03:16:19+00:00",
+          "max_date": "2022-07-23 00:06:48+00:00"
+        },
+        "validation": {
+          "n": 14500,
+          "positive": 693,
+          "negative": 13807,
+          "positive_rate": 0.047793103448275864,
+          "min_date": "2022-07-23 21:03:07+00:00",
+          "max_date": "2024-01-24 06:37:02+00:00"
+        },
+        "target": {
+          "n": 2122,
+          "positive": 95,
+          "negative": 2027,
+          "positive_rate": 0.044769085768143264,
+          "min_date": "2017-02-20 03:08:06+00:00",
+          "max_date": "2020-03-26 03:28:50+00:00"
+        },
+        "test": {
+          "n": 1476,
+          "positive": 87,
+          "negative": 1389,
+          "positive_rate": 0.05894308943089431,
+          "min_date": "2020-08-03 14:20:02+00:00",
+          "max_date": "2023-10-28 09:02:07+00:00"
+        }
+      },
+      "original_rows": 167470,
+      "retained_rows": 162729,
+      "excluded_rows": 4741,
+      "status": "verified"
+    },
+    "tensorflow": {
+      "before_final_purge": [
+        144794,
+        13962,
+        2006,
+        1880
+      ],
+      "after_final_purge": [
+        144794,
+        13962,
+        2006,
+        1880
+      ],
+      "source_training_after_test_start": true,
+      "chronology_scope": "strict source train<validation and target<test; cross-project test is historical LOPO, not forward-in-time evaluation",
+      "source_cells": {
+        "android": {
+          "n": 5320,
+          "negative": 4940,
+          "positive": 380
+        },
+        "chromium": {
+          "n": 22505,
+          "negative": 21704,
+          "positive": 801
+        },
+        "ffmpeg": {
+          "n": 5150,
+          "negative": 4782,
+          "positive": 368
+        },
+        "gpac": {
+          "n": 7334,
+          "negative": 7089,
+          "positive": 245
+        },
+        "radareorg/radare2": {
+          "n": 3592,
+          "negative": 3424,
+          "positive": 168
+        },
+        "torvalds/linux": {
+          "n": 72195,
+          "negative": 69189,
+          "positive": 3006
+        },
+        "vim": {
+          "n": 3319,
+          "negative": 3170,
+          "positive": 149
+        },
+        "wireshark": {
+          "n": 19557,
+          "negative": 18956,
+          "positive": 601
+        },
+        "xen-project/xen": {
+          "n": 5822,
+          "negative": 5348,
+          "positive": 474
+        }
+      },
+      "partitions": {
+        "train": {
+          "n": 144794,
+          "positive": 6192,
+          "negative": 138602,
+          "positive_rate": 0.04276420293658577,
+          "min_date": "2005-04-25 03:16:19+00:00",
+          "max_date": "2022-07-19 11:52:51+00:00"
+        },
+        "validation": {
+          "n": 13962,
+          "positive": 644,
+          "negative": 13318,
+          "positive_rate": 0.04612519696318579,
+          "min_date": "2022-07-26 04:54:34+00:00",
+          "max_date": "2024-01-24 06:37:02+00:00"
+        },
+        "target": {
+          "n": 2006,
+          "positive": 189,
+          "negative": 1817,
+          "positive_rate": 0.09421734795613161,
+          "min_date": "2018-02-14 18:56:47+00:00",
+          "max_date": "2021-10-01 14:52:56+00:00"
+        },
+        "test": {
+          "n": 1880,
+          "positive": 167,
+          "negative": 1713,
+          "positive_rate": 0.08882978723404256,
+          "min_date": "2021-10-04 15:09:45+00:00",
+          "max_date": "2023-02-01 21:48:51+00:00"
+        }
+      },
+      "original_rows": 167470,
+      "retained_rows": 162642,
+      "excluded_rows": 4828,
+      "status": "verified"
+    },
+    "torvalds/linux": {
+      "before_final_purge": [
+        75241,
+        7247,
+        40535,
+        35577
+      ],
+      "after_final_purge": [
+        75241,
+        7247,
+        40535,
+        35577
+      ],
+      "source_training_after_test_start": true,
+      "chronology_scope": "strict source train<validation and target<test; cross-project test is historical LOPO, not forward-in-time evaluation",
+      "source_cells": {
+        "android": {
+          "n": 5320,
+          "negative": 4940,
+          "positive": 380
+        },
+        "chromium": {
+          "n": 22505,
+          "negative": 21704,
+          "positive": 801
+        },
+        "ffmpeg": {
+          "n": 5150,
+          "negative": 4782,
+          "positive": 368
+        },
+        "gpac": {
+          "n": 7311,
+          "negative": 7071,
+          "positive": 240
+        },
+        "radareorg/radare2": {
+          "n": 3592,
+          "negative": 3424,
+          "positive": 168
+        },
+        "tensorflow": {
+          "n": 3014,
+          "negative": 2740,
+          "positive": 274
+        },
+        "vim": {
+          "n": 3246,
+          "negative": 3112,
+          "positive": 134
+        },
+        "wireshark": {
+          "n": 19557,
+          "negative": 18956,
+          "positive": 601
+        },
+        "xen-project/xen": {
+          "n": 5546,
+          "negative": 5082,
+          "positive": 464
+        }
+      },
+      "partitions": {
+        "train": {
+          "n": 75241,
+          "positive": 3430,
+          "negative": 71811,
+          "positive_rate": 0.04558684759639026,
+          "min_date": "2008-09-10 16:15:25+00:00",
+          "max_date": "2022-06-26 03:59:02+00:00"
+        },
+        "validation": {
+          "n": 7247,
+          "positive": 448,
+          "negative": 6799,
+          "positive_rate": 0.06181868359321099,
+          "min_date": "2022-06-26 05:04:07+00:00",
+          "max_date": "2024-01-08 02:09:38+00:00"
+        },
+        "target": {
+          "n": 40535,
+          "positive": 1767,
+          "negative": 38768,
+          "positive_rate": 0.04359195756753423,
+          "min_date": "2005-04-25 03:16:19+00:00",
+          "max_date": "2017-09-18 10:37:03+00:00"
+        },
+        "test": {
+          "n": 35577,
+          "positive": 1444,
+          "negative": 34133,
+          "positive_rate": 0.04058802035022627,
+          "min_date": "2017-09-18 10:37:23+00:00",
+          "max_date": "2024-01-24 06:37:02+00:00"
+        }
+      },
+      "original_rows": 167470,
+      "retained_rows": 158600,
+      "excluded_rows": 8870,
+      "status": "verified"
+    },
+    "vim": {
+      "before_final_purge": [
+        143415,
+        14124,
+        2809,
+        1664
+      ],
+      "after_final_purge": [
+        143415,
+        14124,
+        2809,
+        1664
+      ],
+      "source_training_after_test_start": true,
+      "chronology_scope": "strict source train<validation and target<test; cross-project test is historical LOPO, not forward-in-time evaluation",
+      "source_cells": {
+        "android": {
+          "n": 5320,
+          "negative": 4940,
+          "positive": 380
+        },
+        "chromium": {
+          "n": 22505,
+          "negative": 21704,
+          "positive": 801
+        },
+        "ffmpeg": {
+          "n": 5150,
+          "negative": 4782,
+          "positive": 368
+        },
+        "gpac": {
+          "n": 7311,
+          "negative": 7071,
+          "positive": 240
+        },
+        "radareorg/radare2": {
+          "n": 3527,
+          "negative": 3361,
+          "positive": 166
+        },
+        "tensorflow": {
+          "n": 2994,
+          "negative": 2721,
+          "positive": 273
+        },
+        "torvalds/linux": {
+          "n": 71309,
+          "negative": 68332,
+          "positive": 2977
+        },
+        "wireshark": {
+          "n": 19557,
+          "negative": 18956,
+          "positive": 601
+        },
+        "xen-project/xen": {
+          "n": 5742,
+          "negative": 5279,
+          "positive": 463
+        }
+      },
+      "partitions": {
+        "train": {
+          "n": 143415,
+          "positive": 6269,
+          "negative": 137146,
+          "positive_rate": 0.04371230345500819,
+          "min_date": "2005-04-25 03:16:19+00:00",
+          "max_date": "2022-06-07 06:56:19+00:00"
+        },
+        "validation": {
+          "n": 14124,
+          "positive": 705,
+          "negative": 13419,
+          "positive_rate": 0.04991503823279524,
+          "min_date": "2022-06-08 09:27:21+00:00",
+          "max_date": "2024-01-24 06:37:02+00:00"
+        },
+        "target": {
+          "n": 2809,
+          "positive": 103,
+          "negative": 2706,
+          "positive_rate": 0.036667853328586686,
+          "min_date": "2017-02-09 12:07:12+00:00",
+          "max_date": "2022-04-17 06:06:35+00:00"
+        },
+        "test": {
+          "n": 1664,
+          "positive": 101,
+          "negative": 1563,
+          "positive_rate": 0.060697115384615384,
+          "min_date": "2022-05-06 11:38:47+00:00",
+          "max_date": "2023-11-14 13:42:59+00:00"
+        }
+      },
+      "original_rows": 167470,
+      "retained_rows": 162012,
+      "excluded_rows": 5458,
+      "status": "verified"
+    },
+    "wireshark": {
+      "before_final_purge": [
+        130182,
+        12511,
+        10250,
+        8914
+      ],
+      "after_final_purge": [
+        130182,
+        12511,
+        10250,
+        8914
+      ],
+      "source_training_after_test_start": true,
+      "chronology_scope": "strict source train<validation and target<test; cross-project test is historical LOPO, not forward-in-time evaluation",
+      "source_cells": {
+        "android": {
+          "n": 5320,
+          "negative": 4940,
+          "positive": 380
+        },
+        "chromium": {
+          "n": 22505,
+          "negative": 21704,
+          "positive": 801
+        },
+        "ffmpeg": {
+          "n": 5275,
+          "negative": 4906,
+          "positive": 369
+        },
+        "gpac": {
+          "n": 7343,
+          "negative": 7091,
+          "positive": 252
+        },
+        "radareorg/radare2": {
+          "n": 3592,
+          "negative": 3424,
+          "positive": 168
+        },
+        "tensorflow": {
+          "n": 3374,
+          "negative": 3060,
+          "positive": 314
+        },
+        "torvalds/linux": {
+          "n": 72650,
+          "negative": 69618,
+          "positive": 3032
+        },
+        "vim": {
+          "n": 3933,
+          "negative": 3758,
+          "positive": 175
+        },
+        "xen-project/xen": {
+          "n": 6190,
+          "negative": 5703,
+          "positive": 487
+        }
+      },
+      "partitions": {
+        "train": {
+          "n": 130182,
+          "positive": 5978,
+          "negative": 124204,
+          "positive_rate": 0.0459203269269177,
+          "min_date": "2005-04-25 03:16:19+00:00",
+          "max_date": "2022-09-12 21:35:10+00:00"
+        },
+        "validation": {
+          "n": 12511,
+          "positive": 575,
+          "negative": 11936,
+          "positive_rate": 0.04595955559107985,
+          "min_date": "2022-09-12 21:35:12+00:00",
+          "max_date": "2024-01-24 06:37:02+00:00"
+        },
+        "target": {
+          "n": 10250,
+          "positive": 410,
+          "negative": 9840,
+          "positive_rate": 0.04,
+          "min_date": "2014-02-26 10:00:03+00:00",
+          "max_date": "2018-03-06 14:26:10+00:00"
+        },
+        "test": {
+          "n": 8914,
+          "positive": 224,
+          "negative": 8690,
+          "positive_rate": 0.025129010545209784,
+          "min_date": "2018-03-07 08:40:56+00:00",
+          "max_date": "2023-12-01 19:00:34+00:00"
+        }
+      },
+      "original_rows": 167470,
+      "retained_rows": 161857,
+      "excluded_rows": 5613,
+      "status": "verified"
+    },
+    "xen-project/xen": {
+      "before_final_purge": [
+        142363,
+        13990,
+        3044,
+        2417
+      ],
+      "after_final_purge": [
+        142363,
+        13990,
+        3044,
+        2417
+      ],
+      "source_training_after_test_start": true,
+      "chronology_scope": "strict source train<validation and target<test; cross-project test is historical LOPO, not forward-in-time evaluation",
+      "source_cells": {
+        "android": {
+          "n": 5320,
+          "negative": 4940,
+          "positive": 380
+        },
+        "chromium": {
+          "n": 22505,
+          "negative": 21704,
+          "positive": 801
+        },
+        "ffmpeg": {
+          "n": 5150,
+          "negative": 4782,
+          "positive": 368
+        },
+        "gpac": {
+          "n": 7334,
+          "negative": 7089,
+          "positive": 245
+        },
+        "radareorg/radare2": {
+          "n": 3592,
+          "negative": 3424,
+          "positive": 168
+        },
+        "tensorflow": {
+          "n": 3371,
+          "negative": 3058,
+          "positive": 313
+        },
+        "torvalds/linux": {
+          "n": 72030,
+          "negative": 69024,
+          "positive": 3006
+        },
+        "vim": {
+          "n": 3504,
+          "negative": 3352,
+          "positive": 152
+        },
+        "wireshark": {
+          "n": 19557,
+          "negative": 18956,
+          "positive": 601
+        }
+      },
+      "partitions": {
+        "train": {
+          "n": 142363,
+          "positive": 6034,
+          "negative": 136329,
+          "positive_rate": 0.04238460836031834,
+          "min_date": "2005-04-25 03:16:19+00:00",
+          "max_date": "2022-07-28 03:45:33+00:00"
+        },
+        "validation": {
+          "n": 13990,
+          "positive": 658,
+          "negative": 13332,
+          "positive_rate": 0.04703359542530379,
+          "min_date": "2022-07-28 04:42:43+00:00",
+          "max_date": "2024-01-24 06:37:02+00:00"
+        },
+        "target": {
+          "n": 3044,
+          "positive": 213,
+          "negative": 2831,
+          "positive_rate": 0.06997371879106438,
+          "min_date": "2014-01-22 09:47:21+00:00",
+          "max_date": "2017-10-12 04:48:25+00:00"
+        },
+        "test": {
+          "n": 2417,
+          "positive": 224,
+          "negative": 2193,
+          "positive_rate": 0.09267687215556475,
+          "min_date": "2017-10-12 04:50:07+00:00",
+          "max_date": "2023-08-30 11:24:25+00:00"
+        }
+      },
+      "original_rows": 167470,
+      "retained_rows": 161814,
+      "excluded_rows": 5656,
+      "status": "verified"
+    }
+  },
+  "near_duplicates": {
+    "method": "64-bit token-5-shingle SimHash, four 16-bit bands, Hamming<=3, length ratio>=0.8",
+    "examined_rows": 2000,
+    "comparisons": 195,
+    "capped": true,
+    "bucket_cap": 8,
+    "candidates": [
+      {
+        "left": "056ae78e8ae60603fac17b3fbd0a1366408d5d56b5dd79cb6b572147203f6d98",
+        "right": "2f6a273cc465f17c173b97b9b324dc11a712d2754f42394ad177b02b02144a9e",
+        "cross_project": false
+      },
+      {
+        "left": "a785eccd91fd5cad6d7aac20c5de0004c34da248530ba2620e6b81baef9354c3",
+        "right": "e9fd261e1a9dcba2658af510bc17ab1bfd66060a7a7aec4dd7941953483e5e1e",
+        "cross_project": false
+      },
+      {
+        "left": "977141a9d57b29938726ceaec3577e1240807ad93022ae5aad48d07eb827e39e",
+        "right": "f8fb6c8d3100c22d945aca848c60f2e2cef400d2a5321c2bea84b72ff3970c0c",
+        "cross_project": false
+      },
+      {
+        "left": "219b29df2dc449150c9400dbd670000360aaeb00fc07f85b642fbead7e70a9d4",
+        "right": "6c8590358cc9e57be856768b2f3edd9081d89528018eaa047b6a16f84ddc4369",
+        "cross_project": false
+      },
+      {
+        "left": "3bfbe2045aadc30c01919356c622b17bebfc3342f600a017069117ac5151f173",
+        "right": "8ab7711d3bc056bbe5912a4f46428862aaf9a5e585ea49475b5fe36810089d08",
+        "cross_project": false
+      },
+      {
+        "left": "3b754235500bd7ec367e65bed57f6482f8b6cf3c6a937a8111bdd45ef73bb18e",
+        "right": "8fd5ce500771d7ec17f3821f5aa7bb7c80942a7ed3bdb042f44afa1da56517ce",
+        "cross_project": false
+      },
+      {
+        "left": "e75035918591697fb914f9071d1e760b2c70ee895f333e9bc7e7e6a9d5a0c510",
+        "right": "aebfb2a75d34dd7b05886335a7972fec09009f0459a23f08af5e0789ff24f640",
+        "cross_project": false
+      },
+      {
+        "left": "cebbec2a703fc82711e33779fff0f6666fe84dd9dc2171111ea93cb40c23d9c7",
+        "right": "70ad6ef0d67b7bdb3d35d5cdb3d0e0ec0b946bb1cb18a5c94664b9b58d582af0",
+        "cross_project": false
+      },
+      {
+        "left": "0373f68224705c0db1b46ee4431a748b9065671aaf67e07d7c066e785e87d6a2",
+        "right": "0dca484c62c5e086a0daa8b7be0a8e964fbf78e460f420743c3d08944ac5fab7",
+        "cross_project": false
+      },
+      {
+        "left": "66ff728d693df1ba30e83e7c9dd92bb68b80a7c723edb613bf8b8a7acc6038a2",
+        "right": "25827d2c3d4c0f1009aeda9f5f07ea0ab997db1fe01ade3413dbd92d1cb788c0",
+        "cross_project": false
+      },
+      {
+        "left": "31e23696ef0d6a449177409e2580b7408b56e4e50352d52ea3aeedf8b43c4949",
+        "right": "5cda7948d10626deeb599c9188c7418be8fd22cfc666416c2487909f63e428a0",
+        "cross_project": false
+      },
+      {
+        "left": "f0b59dea6f2f1546ecec03155babb5810c0b3f25853c76e068fa6c0d1666f892",
+        "right": "6ec95167486ff512212c5001110cc77acecf82ceb6fafe036780b11b9c2f2513",
+        "cross_project": false
+      },
+      {
+        "left": "6065be7bfb122c344655797b2ca15d7b165c4d63017465292c36c796d8f7cce4",
+        "right": "ae769dd71540571c48d3a54418d690f9f20f6390abb1dbc89081b6f788599599",
+        "cross_project": false
+      },
+      {
+        "left": "db9004f75d0e391a603139b06984cdf54274cc3eabc7c5e6d7af384462c9ee7a",
+        "right": "c45f103a174a1037bd3bdc193c87a0dbe120f1c89a1427bddebb1309fb010d64",
+        "cross_project": false
+      },
+      {
+        "left": "529e61dd9da728e4fad6f1d0e74766c57b9a653db5ce42578d029950766a164f",
+        "right": "e0ebeac7a3f367be482622ddd0286e80a533298488038016d8a1ce33afa79bc9",
+        "cross_project": false
+      },
+      {
+        "left": "b6af690568ad3a0bc4296355301b2c60a771f3b697c6d6e4ccc8b539255d1c12",
+        "right": "e812fa63c22ffba814cafb1f05da9d78d897e224014ba510e8843649b6e2c14f",
+        "cross_project": false
+      }
+    ],
+    "note": "Diagnostic candidates require review. First bounded rows in timestamp order, first 256 tokens per function; absence is not an exhaustive leakage guarantee."
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "status": "PREREGISTERED_BEFORE_MODEL_METRICS",
+  "held_out": "torvalds/linux",
+  "held_out_policy": "largest post-cleaning project; independent of performance",
+  "seed": 0,
+  "audit": {
+    "protocol": "bounded-real-lopo-v1",
+    "seed": 0,
+    "train_per_project": 32,
+    "val_limit": 128,
+    "target_limit": 128,
+    "test_limit": 256,
+    "full_partition_rows": [
+      75241,
+      7247,
+      40535,
+      35577
+    ],
+    "evaluated_partition_rows": [
+      288,
+      128,
+      128,
+      256
+    ],
+    "selection_policy": "Training per-project proportional binary quotas; validation/target/test hash ranking without labels",
+    "hashes": {
+      "train": "4bdbc282ad3d10016bdbcedd8a2bf9d1e3d65e5557e67af6669f71ea1e60bb56",
+      "validation": "679d7c3273851219b9d14776d1455b335440210ba0bdc2b2cd52347d9ee3104b",
+      "target": "33f30d7ebb46ae17191c2169beda5138bddcdfed4708e7047eee6f67bc277f98",
+      "test": "813066d1f31bffcd1d5322be051c1b8a34df37a38422c32eb74d8382645f759a"
+    }
+  },
+  "partitions": {
+    "train": {
+      "n": 288,
+      "positive": 15,
+      "negative": 273
+    },
+    "validation": {
+      "n": 128,
+      "positive": 12,
+      "negative": 116
+    },
+    "target": {
+      "n": 128,
+      "positive": 3,
+      "negative": 125
+    },
+    "test": {
+      "n": 256,
+      "positive": 13,
+      "negative": 243
+    }
+  },
+  "bounded_near_candidates": {
+    "total": 16,
+    "cross_project": 0,
+    "cross_partition": 0,
+    "selected_cohort_pairs": 0
+  }
+}

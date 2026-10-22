@@ -1,0 +1,61 @@
+{
+  "status": "TESTED_CPU_FIXTURE_SCOPE_REAL_DATA_BLOCKED",
+  "local_date": "2026-10-20",
+  "timezone": "Asia/Ho_Chi_Minh",
+  "baseline_commit": "9ae55d80752245cfc60df577aa065f3d8c1fd742",
+  "branch": "fix/training-pipeline-audit",
+  "pytest": {
+    "passed": 85,
+    "skipped": 1,
+    "failed": 0,
+    "duration_seconds": 5.45,
+    "wall_seconds": 7.63,
+    "max_rss_kib": 598212,
+    "skip_reason": "Native CUDA unavailable in CPU PyTorch environment",
+    "log": "runs/audit/pytest.log"
+  },
+  "sanity": {
+    "methods": [
+      "erm",
+      "irm",
+      "dro",
+      "cc-dro",
+      "pd-dro",
+      "da-coral",
+      "da-dann"
+    ],
+    "data": "synthetic fixtures only",
+    "pretrained_backbone_downloaded": false,
+    "log": "runs/audit/synthetic_sanity.log"
+  },
+  "static_compile": "passed",
+  "editable_import": "passed, version 0.2.0",
+  "configs": [
+    "default:passed",
+    "colab:passed"
+  ],
+  "dependencies": "all 50 installed packages compatible",
+  "git_whitespace": "passed staged and unstaged",
+  "real_data": {
+    "status": "BLOCKED",
+    "reason": "Official OneDrive HTTP 403; no authentic local dataset found",
+    "raw_count": null,
+    "processed_count": null,
+    "class_distribution": null,
+    "training_run": false,
+    "metrics_measured": false
+  },
+  "checkpoint_schema": 3,
+  "processed_protocol": "megavul-v2-strict-before-global-quarantine-temporal-purge",
+  "baseline_probe": {
+    "baseline_commit": "9ae55d80752245cfc60df577aa065f3d8c1fd742",
+    "positive_without_before_accepted_postfix": true,
+    "invalid_numeric_label_2_accepted": true,
+    "owner_project_collision": true,
+    "equal_risk_cc_weights": [
+      0.26894140243530273,
+      0.7310585379600525
+    ],
+    "large_risk_groupdro_nonfinite": true
+  }
+}

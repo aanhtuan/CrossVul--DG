@@ -1,0 +1,1767 @@
+{
+  "status": "VERIFIED_REAL_DATA_AND_BOUNDED_NATIVE_TRAINING",
+  "date": "2026-10-20",
+  "dataset": {
+    "raw_rows": 353873,
+    "clean_rows": 330345,
+    "top_rows": 167470,
+    "tail_rows": 162875,
+    "sha256": "eabe8d3325be358d7a93327e3ae4f001725517a0067c4d80198f89904177419f"
+  },
+  "tests": {
+    "cpu_passed": 90,
+    "cpu_skipped": 3,
+    "gpu_passed": 93,
+    "gpu_skipped": 0
+  },
+  "cohort": {
+    "status": "PREREGISTERED_BEFORE_MODEL_METRICS",
+    "held_out": "torvalds/linux",
+    "held_out_policy": "largest post-cleaning project; independent of performance",
+    "seed": 0,
+    "audit": {
+      "protocol": "bounded-real-lopo-v1",
+      "seed": 0,
+      "train_per_project": 32,
+      "val_limit": 128,
+      "target_limit": 128,
+      "test_limit": 256,
+      "full_partition_rows": [
+        75241,
+        7247,
+        40535,
+        35577
+      ],
+      "evaluated_partition_rows": [
+        288,
+        128,
+        128,
+        256
+      ],
+      "selection_policy": "Training per-project proportional binary quotas; validation/target/test hash ranking without labels",
+      "hashes": {
+        "train": "4bdbc282ad3d10016bdbcedd8a2bf9d1e3d65e5557e67af6669f71ea1e60bb56",
+        "validation": "679d7c3273851219b9d14776d1455b335440210ba0bdc2b2cd52347d9ee3104b",
+        "target": "33f30d7ebb46ae17191c2169beda5138bddcdfed4708e7047eee6f67bc277f98",
+        "test": "813066d1f31bffcd1d5322be051c1b8a34df37a38422c32eb74d8382645f759a"
+      }
+    },
+    "partitions": {
+      "train": {
+        "n": 288,
+        "positive": 15,
+        "negative": 273
+      },
+      "validation": {
+        "n": 128,
+        "positive": 12,
+        "negative": 116
+      },
+      "target": {
+        "n": 128,
+        "positive": 3,
+        "negative": 125
+      },
+      "test": {
+        "n": 256,
+        "positive": 13,
+        "negative": 243
+      }
+    },
+    "bounded_near_candidates": {
+      "total": 16,
+      "cross_project": 0,
+      "cross_partition": 0,
+      "selected_cohort_pairs": 0
+    }
+  },
+  "runs": {
+    "ERM": {
+      "val": {
+        "threshold": 0.005598248913884163,
+        "accuracy": 0.7734375,
+        "precision": 0.20689655172413793,
+        "recall": 0.5,
+        "f1": 0.2926829268292683,
+        "pr_auc": 0.1766742972200334,
+        "roc_auc": 0.6921695402298851,
+        "recall_at_p50": 0.0,
+        "diagnostic_test_pr_curve_recall_at_p50": 0.0,
+        "recall_at_p50_definition": "PR-curve diagnostic on evaluated labels; NOT a validation-selected deployable threshold",
+        "confusion_matrix": [
+          [
+            93,
+            23
+          ],
+          [
+            6,
+            6
+          ]
+        ],
+        "metric_status": "defined",
+        "n": 128,
+        "n_pos": 12,
+        "pos_rate": 0.09375,
+        "groups": {
+          "0": {
+            "threshold": 0.005598248913884163,
+            "accuracy": 0.7931034482758621,
+            "precision": 0.14285714285714285,
+            "recall": 1.0,
+            "f1": 0.25,
+            "pr_auc": 0.14285714285714285,
+            "roc_auc": 0.7857142857142857,
+            "recall_at_p50": 0.0,
+            "diagnostic_test_pr_curve_recall_at_p50": 0.0,
+            "recall_at_p50_definition": "PR-curve diagnostic on evaluated labels; NOT a validation-selected deployable threshold",
+            "confusion_matrix": [
+              [
+                22,
+                6
+              ],
+              [
+                0,
+                1
+              ]
+            ],
+            "metric_status": "defined",
+            "n": 29,
+            "n_pos": 1,
+            "pos_rate": 0.034482758620689655
+          },
+          "2": {
+            "threshold": 0.005598248913884163,
+            "accuracy": 0.5,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "pr_auc": null,
+            "roc_auc": null,
+            "recall_at_p50": null,
+            "diagnostic_test_pr_curve_recall_at_p50": null,
+            "recall_at_p50_definition": "PR-curve diagnostic on evaluated labels; NOT a validation-selected deployable threshold",
+            "confusion_matrix": [
+              [
+                2,
+                2
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "metric_status": "single_class_auc_undefined",
+            "n": 4,
+            "n_pos": 0,
+            "pos_rate": 0.0
+          },
+          "3": {
+            "threshold": 0.005598248913884163,
+            "accuracy": 0.9090909090909091,
+            "precision": 0.75,
+            "recall": 0.5,
+            "f1": 0.6,
+            "pr_auc": 0.515079365079365,
+            "roc_auc": 0.7171052631578948,
+            "recall_at_p50": 0.5,
+            "diagnostic_test_pr_curve_recall_at_p50": 0.5,
+            "recall_at_p50_definition": "PR-curve diagnostic on evaluated labels; NOT a validation-selected deployable threshold",
+            "confusion_matrix": [
+              [
+                37,
+                1
+              ],
+              [
+                3,
+                3
+              ]
+            ],
+            "metric_status": "defined",
+            "n": 44,
+            "n_pos": 6,
+            "pos_rate": 0.13636363636363635
+          },
+          "4": {
+            "threshold": 0.005598248913884163,
+            "accuracy": 0.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "pr_auc": null,
+            "roc_auc": null,
+            "recall_at_p50": null,
+            "diagnostic_test_pr_curve_recall_at_p50": null,
+            "recall_at_p50_definition": "PR-curve diagnostic on evaluated labels; NOT a validation-selected deployable threshold",
+            "confusion_matrix": [
+              [
+                0,
+                1
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "metric_status": "single_class_auc_undefined",
+            "n": 1,
+            "n_pos": 0,
+            "pos_rate": 0.0
+          },
+          "5": {
+            "threshold": 0.005598248913884163,
+            "accuracy": 0.6428571428571429,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "pr_auc": 0.1,
+            "roc_auc": 0.38461538461538464,
+            "recall_at_p50": 0.0,
+            "diagnostic_test_pr_curve_recall_at_p50": 0.0,
+            "recall_at_p50_definition": "PR-curve diagnostic on evaluated labels; NOT a validation-selected deployable threshold",
+            "confusion_matrix": [
+              [
+                9,
+                4
+              ],
+              [
+                1,
+                0
+              ]
+            ],
+            "metric_status": "defined",
+            "n": 14,
+            "n_pos": 1,
+            "pos_rate": 0.07142857142857142
+          },
+          "7": {
+            "threshold": 0.005598248913884163,
+            "accuracy": 0.7058823529411765,
+            "precision": 0.3333333333333333,
+            "recall": 0.6666666666666666,
+            "f1": 0.4444444444444444,
+            "pr_auc": 0.31666666666666665,
+            "roc_auc": 0.7023809523809523,
+            "recall_at_p50": 0.0,
+            "diagnostic_test_pr_curve_recall_at_p50": 0.0,
+            "recall_at_p50_definition": "PR-curve diagnostic on evaluated labels; NOT a validation-selected deployable threshold",
+            "confusion_matrix": [
+              [
+                10,
+                4
+              ],
+              [
+                1,
+                2
+              ]
+            ],
+            "metric_status": "defined",
+            "n": 17,
+            "n_pos": 3,
+            "pos_rate": 0.17647058823529413
+          },
+          "8": {
+            "threshold": 0.005598248913884163,
+            "accuracy": 0.8181818181818182,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "pr_auc": null,
+            "roc_auc": null,
+            "recall_at_p50": null,
+            "diagnostic_test_pr_curve_recall_at_p50": null,
+            "recall_at_p50_definition": "PR-curve diagnostic on evaluated labels; NOT a validation-selected deployable threshold",
+            "confusion_matrix": [
+              [
+                9,
+                2
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "metric_status": "single_class_auc_undefined",
+            "n": 11,
+            "n_pos": 0,
+            "pos_rate": 0.0
+          },
+          "9": {
+            "threshold": 0.005598248913884163,
+            "accuracy": 0.5,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "pr_auc": 0.2,
+            "roc_auc": 0.4285714285714286,
+            "recall_at_p50": 0.0,
+            "diagnostic_test_pr_curve_recall_at_p50": 0.0,
+            "recall_at_p50_definition": "PR-curve diagnostic on evaluated labels; NOT a validation-selected deployable threshold",
+            "confusion_matrix": [
+              [
+                4,
+                3
+              ],
+              [
+                1,
+                0
+              ]
+            ],
+            "metric_status": "defined",
+            "n": 8,
+            "n_pos": 1,
+            "pos_rate": 0.125
+          }
+        },
+        "mean_project_f1": 0.16180555555555554,
+        "worst_project_f1": 0.0,
+        "mean_project_pr_auc": 0.2549206349206349,
+        "worst_project_pr_auc": 0.1,
+        "mean_project_roc_auc": 0.6036774628879892,
+        "worst_project_roc_auc": 0.38461538461538464,
+        "mean_project_precision": 0.1532738095238095,
+        "worst_project_precision": 0.0,
+        "mean_project_recall": 0.2708333333333333,
+        "worst_project_recall": 0.0
+      },
+      "test": {
+        "threshold": 0.005598248913884163,
+        "accuracy": 0.734375,
+        "precision": 0.07692307692307693,
+        "recall": 0.38461538461538464,
+        "f1": 0.1282051282051282,
+        "pr_auc": 0.22820406077891114,
+        "roc_auc": 0.6313706869262425,
+        "recall_at_p50": 0.15384615384615385,
+        "diagnostic_test_pr_curve_recall_at_p50": 0.15384615384615385,
+        "recall_at_p50_definition": "PR-curve diagnostic on evaluated labels; NOT a validation-selected deployable threshold",
+        "confusion_matrix": [
+          [
+            183,
+            60
+          ],
+          [
+            8,
+            5
+          ]
+        ],
+        "metric_status": "defined",
+        "n": 256,
+        "n_pos": 13,
+        "pos_rate": 0.05078125,
+        "groups": {
+          "6": {
+            "threshold": 0.005598248913884163,
+            "accuracy": 0.734375,
+            "precision": 0.07692307692307693,
+            "recall": 0.38461538461538464,
+            "f1": 0.1282051282051282,
+            "pr_auc": 0.22820406077891114,
+            "roc_auc": 0.6313706869262425,
+            "recall_at_p50": 0.15384615384615385,
+            "diagnostic_test_pr_curve_recall_at_p50": 0.15384615384615385,
+            "recall_at_p50_definition": "PR-curve diagnostic on evaluated labels; NOT a validation-selected deployable threshold",
+            "confusion_matrix": [
+              [
+                183,
+                60
+              ],
+              [
+                8,
+                5
+              ]
+            ],
+            "metric_status": "defined",
+            "n": 256,
+            "n_pos": 13,
+            "pos_rate": 0.05078125
+          }
+        },
+        "mean_project_f1": 0.1282051282051282,
+        "worst_project_f1": 0.1282051282051282,
+        "mean_project_pr_auc": 0.22820406077891114,
+        "worst_project_pr_auc": 0.22820406077891114,
+        "mean_project_roc_auc": 0.6313706869262425,
+        "worst_project_roc_auc": 0.6313706869262425,
+        "mean_project_precision": 0.07692307692307693,
+        "worst_project_precision": 0.07692307692307693,
+        "mean_project_recall": 0.38461538461538464,
+        "worst_project_recall": 0.38461538461538464,
+        "validation_precision_floor_threshold": 1.0000000000000002,
+        "recall_at_validation_p50_threshold": 0.0,
+        "precision_at_validation_p50_threshold": 0.0
+      },
+      "config": {
+        "encoder": {
+          "name": "microsoft/codebert-base",
+          "revision": "3b0952feddeffad0063f274080e3c23d75e7eb39",
+          "max_length": 128,
+          "hidden_size": 768,
+          "dropout": 0.1,
+          "gradient_checkpointing": true
+        },
+        "train": {
+          "batch_size": 2,
+          "lr": 2e-05,
+          "weight_decay": 0.01,
+          "epochs": 2,
+          "warmup_steps": 0,
+          "grad_clip": 1.0,
+          "early_stopping_patience": 2,
+          "num_workers": 0,
+          "monitor": "pr_auc",
+          "checkpoint_path": null,
+          "resume": true,
+          "device": "cuda",
+          "amp": true
+        },
+        "eval": {
+          "batch_size": 2
+        },
+        "irm": {
+          "lambda_max": 10.0,
+          "warmup_epochs": 1
+        },
+        "dro": {
+          "eta_q": 0.01
+        },
+        "cc_dro": {
+          "eta_q": 0.01,
+          "lambda_inv": 1.0,
+          "warmup_epochs": 1,
+          "balanced_batches": true,
+          "use_pos_weight": false
+        },
+        "da": {
+          "coral_weight": 1.0,
+          "dann_lambda": 0.1,
+          "target_ratio": 0.5
+        },
+        "pseudo": {
+          "n_clusters": 5,
+          "embedding_subset": 1024
+        },
+        "data": {
+          "top_k": 10,
+          "train_ratio": 0.8,
+          "val_ratio": 0.1,
+          "test_ratio": 0.1,
+          "dedup": true
+        },
+        "compute_budget": {
+          "train_per_project": 32,
+          "val_limit": 128,
+          "target_limit": 128,
+          "test_limit": 256
+        }
+      },
+      "software": {
+        "python": "3.12.14",
+        "platform": "Linux-7.1.10-200.fc44.x86_64-x86_64-with-glibc2.43",
+        "packages": {
+          "torch": "2.10.0+cu128",
+          "transformers": "4.57.6",
+          "pandas": "3.0.6",
+          "numpy": "2.5.4",
+          "pyarrow": "26.0.0",
+          "scikit-learn": "1.9.1",
+          "duckdb": "1.5.6",
+          "ijson": "3.6.0"
+        },
+        "git_commit": "9ae55d80752245cfc60df577aa065f3d8c1fd742",
+        "git_dirty": true,
+        "source_signature": "fc06e02b2ef74100a5c6fd5bb24e36fa800749a53bb0fd21b1c2a70f8cf4c5de",
+        "source_hashes": {
+          "src/crossvul_dg/__init__.py": "54f8c71dc2e39e49cd0b5430c89c52ab92c3d11cb159bef8e8f08db5082242e5",
+          "src/crossvul_dg/cohorts.py": "2e722a5d6fd775591d79128a38eb8be359baf4fcea5deb964c22567e21fe7813",
+          "src/crossvul_dg/config.py": "9bd34ea6c946602f732a8a9eb3db906342ff0f64a130ec876fc9bfb081854906",
+          "src/crossvul_dg/count_projects.py": "efa30fb827b4d7446bdb46470090165ba8bc801e8d1a37349996dd0c3e8cdb39",
+          "src/crossvul_dg/data.py": "320400450ea7c417f79e8ff6e81ecbb9709ec6ba73afd214703db2be9f2a0b41",
+          "src/crossvul_dg/evaluate.py": "25f8868025c2ac1041bf5d5075cb3a70a8755dd57bc2681da2bce4f8717b210e",
+          "src/crossvul_dg/losses.py": "6ad212436f32de3825027f64c02dfab31a9db35d40596a80249206470c0465d3",
+          "src/crossvul_dg/models.py": "5c4e48ec4278afe9404a8af5684a9a5a8c40dc4513d0f2297c8031faf5b8ca1b",
+          "src/crossvul_dg/preprocessing.py": "d119f2530d8bf56b424663a98af8d28a000e91cb55c00115edee7063d812ec87",
+          "src/crossvul_dg/provenance.py": "155e1458fa88a3011bcac9ccc26892e55c10c4aaf7315e9c80c6a62e7174dd5a",
+          "src/crossvul_dg/pseudo_domains.py": "4ee3036cf750dfeb9c7d0b9c17ab91b7ed48c44bf1ea275a3dacc71cbe783928",
+          "src/crossvul_dg/resources.py": "8bdfa3ed6cee5b33da617ebee9f2a7cbf4067623489cce13f66e88780049d22f",
+          "src/crossvul_dg/trainers.py": "db54a64ccf0d8da797f3eab816a403f1bfad5e2ed44513bc4496ab0693f30bca",
+          "src/crossvul_dg/utils.py": "8b180d03c56d0b02c0b0894baf6430d1c8f43b30b49d6f1b258d24d490c6d7e6",
+          "scripts/aggregate_results.py": "a8fd4bca7c5fcf6055ca9cbb9d75456dd26f3cd3ac7e658b60918714a857f514",
+          "scripts/audit_data.py": "9e62aaf425be5fdd350dd05dddc36899efeae2c4d66a667ad650e1b393ffdd99",
+          "scripts/audit_token_lengths.py": "da1fe90e8f0cc8febe6cb81d80ee8849e279b15f0f46c4be087f4ef3b984c4d7",
+          "scripts/cache_backbone.py": "2f5c20c4abd8396f4b947b98d82310db91d810452e61926a04ca869f4c6c3005",
+          "scripts/check_default_config.py": "0fb69a1959dc49be296af08e8371028ffb2da424bb3ec4b9d02c0e5e9f1d4b48",
+          "scripts/package_training_bundle.py": "0305d31295962e4ff2779673ad0a74c64fb3779ac9405c2f3de5201ff14d282e",
+          "scripts/plan_real_ablations.py": "6e0c3a703ed4e8e386a1dfc3e90718f0816aa1501aa937e56cc7146ba56f4ec3",
+          "scripts/prepare_data.py": "6a83fae2a5a0d82ba66f755de2a62339017a1c9e6f4cfbf48097bbc511e9a0eb",
+          "scripts/run_focused_ablations.py": "081a1438b665058c9ee957207dc3acae914578f535312f4e6c6c154ae81ad316",
+          "scripts/run_full_sweep.sh": "10cad66c0789a47f546d33d0cc7a6146dcd242f407621e54d3bee3421618f5c6",
+          "scripts/run_guarded.py": "791aeb3aa1d9719cdf5a6a100ea2e1e76ab9c0379e6303e08e0c90da324bb0ad",
+          "scripts/run_lopo.py": "76d99dc1cde879d888e2dd28518797d1bdcfd9694448a07cb495fca07c57f151",
+          "scripts/run_one_colab.sh": "95a4ec3cc3c3178f607784ac1800e4f3fa6f451a2a2821f879b0f98a048a8c64",
+          "scripts/run_real_diagnostics.py": "5350bed7bac5d680d210b43fa602a1d486b9f20e6643f445636dcd9e7db53b1f",
+          "scripts/run_sanity_check.py": "08abb3cb714f9c9f9167eb4f4f795efb371a061d0c58a2a26144c1b52e7738c1",
+          "scripts/run_tier2_backbones.sh": "26f9214b64125e3ca8acb4544191e236ce40484cc81a06ade22f3e713e78178b",
+          "scripts/select_validation_run.py": "e8cc165de081b91f4c33a8e58343824ccffd2c06d57a912419a6ce72634e0616",
+          "configs/colab.yaml": "fa90952c90cc4816a84768e7a4609c7b3be2839487041b85c8b565d0b0f8922f",
+          "configs/default.yaml": "ae9d624b2827b0b48a20c43e0e456862d7b0752302dbdd0583415506fd993ba6",
+          "configs/local_gpu.yaml": "b3ae1e3598408359a73560d5897f7d0f7a3e363540314c8aa5b35ba430549a37"
+        }
+      },
+      "measurements": {
+        "runtime_seconds": 54.69954953099659,
+        "process_peak_rss_bytes": 2744455168,
+        "peak_cuda_allocated_bytes": 2381483008,
+        "peak_cuda_reserved_bytes": 2554331136
+      }
+    },
+    "CC-DRO lambda=1": {
+      "val": {
+        "threshold": 0.5323035717010498,
+        "accuracy": 0.8671875,
+        "precision": 0.3076923076923077,
+        "recall": 0.3333333333333333,
+        "f1": 0.32,
+        "pr_auc": 0.22412494616911488,
+        "roc_auc": 0.6458333333333334,
+        "recall_at_p50": 0.16666666666666666,
+        "diagnostic_test_pr_curve_recall_at_p50": 0.16666666666666666,
+        "recall_at_p50_definition": "PR-curve diagnostic on evaluated labels; NOT a validation-selected deployable threshold",
+        "confusion_matrix": [
+          [
+            107,
+            9
+          ],
+          [
+            8,
+            4
+          ]
+        ],
+        "metric_status": "defined",
+        "n": 128,
+        "n_pos": 12,
+        "pos_rate": 0.09375,
+        "groups": {
+          "0": {
+            "threshold": 0.5323035717010498,
+            "accuracy": 0.896551724137931,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "pr_auc": 0.125,
+            "roc_auc": 0.75,
+            "recall_at_p50": 0.0,
+            "diagnostic_test_pr_curve_recall_at_p50": 0.0,
+            "recall_at_p50_definition": "PR-curve diagnostic on evaluated labels; NOT a validation-selected deployable threshold",
+            "confusion_matrix": [
+              [
+                26,
+                2
+              ],
+              [
+                1,
+                0
+              ]
+            ],
+            "metric_status": "defined",
+            "n": 29,
+            "n_pos": 1,
+            "pos_rate": 0.034482758620689655
+          },
+          "2": {
+            "threshold": 0.5323035717010498,
+            "accuracy": 1.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "pr_auc": null,
+            "roc_auc": null,
+            "recall_at_p50": null,
+            "diagnostic_test_pr_curve_recall_at_p50": null,
+            "recall_at_p50_definition": "PR-curve diagnostic on evaluated labels; NOT a validation-selected deployable threshold",
+            "confusion_matrix": [
+              [
+                4,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "metric_status": "single_class_auc_undefined",
+            "n": 4,
+            "n_pos": 0,
+            "pos_rate": 0.0
+          },
+          "3": {
+            "threshold": 0.5323035717010498,
+            "accuracy": 0.9090909090909091,
+            "precision": 1.0,
+            "recall": 0.3333333333333333,
+            "f1": 0.5,
+            "pr_auc": 0.5071401766448206,
+            "roc_auc": 0.7192982456140351,
+            "recall_at_p50": 0.3333333333333333,
+            "diagnostic_test_pr_curve_recall_at_p50": 0.3333333333333333,
+            "recall_at_p50_definition": "PR-curve diagnostic on evaluated labels; NOT a validation-selected deployable threshold",
+            "confusion_matrix": [
+              [
+                38,
+                0
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "metric_status": "defined",
+            "n": 44,
+            "n_pos": 6,
+            "pos_rate": 0.13636363636363635
+          },
+          "4": {
+            "threshold": 0.5323035717010498,
+            "accuracy": 1.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "pr_auc": null,
+            "roc_auc": null,
+            "recall_at_p50": null,
+            "diagnostic_test_pr_curve_recall_at_p50": null,
+            "recall_at_p50_definition": "PR-curve diagnostic on evaluated labels; NOT a validation-selected deployable threshold",
+            "confusion_matrix": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "metric_status": "single_class_auc_undefined",
+            "n": 1,
+            "n_pos": 0,
+            "pos_rate": 0.0
+          },
+          "5": {
+            "threshold": 0.5323035717010498,
+            "accuracy": 0.7857142857142857,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "pr_auc": 0.16666666666666666,
+            "roc_auc": 0.6153846153846154,
+            "recall_at_p50": 0.0,
+            "diagnostic_test_pr_curve_recall_at_p50": 0.0,
+            "recall_at_p50_definition": "PR-curve diagnostic on evaluated labels; NOT a validation-selected deployable threshold",
+            "confusion_matrix": [
+              [
+                11,
+                2
+              ],
+              [
+                1,
+                0
+              ]
+            ],
+            "metric_status": "defined",
+            "n": 14,
+            "n_pos": 1,
+            "pos_rate": 0.07142857142857142
+          },
+          "7": {
+            "threshold": 0.5323035717010498,
+            "accuracy": 0.7647058823529411,
+            "precision": 0.4,
+            "recall": 0.6666666666666666,
+            "f1": 0.5,
+            "pr_auc": 0.6180555555555556,
+            "roc_auc": 0.6666666666666666,
+            "recall_at_p50": 0.6666666666666666,
+            "diagnostic_test_pr_curve_recall_at_p50": 0.6666666666666666,
+            "recall_at_p50_definition": "PR-curve diagnostic on evaluated labels; NOT a validation-selected deployable threshold",
+            "confusion_matrix": [
+              [
+                11,
+                3
+              ],
+              [
+                1,
+                2
+              ]
+            ],
+            "metric_status": "defined",
+            "n": 17,
+            "n_pos": 3,
+            "pos_rate": 0.17647058823529413
+          },
+          "8": {
+            "threshold": 0.5323035717010498,
+            "accuracy": 0.8181818181818182,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "pr_auc": null,
+            "roc_auc": null,
+            "recall_at_p50": null,
+            "diagnostic_test_pr_curve_recall_at_p50": null,
+            "recall_at_p50_definition": "PR-curve diagnostic on evaluated labels; NOT a validation-selected deployable threshold",
+            "confusion_matrix": [
+              [
+                9,
+                2
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "metric_status": "single_class_auc_undefined",
+            "n": 11,
+            "n_pos": 0,
+            "pos_rate": 0.0
+          },
+          "9": {
+            "threshold": 0.5323035717010498,
+            "accuracy": 0.875,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "pr_auc": 0.25,
+            "roc_auc": 0.5714285714285714,
+            "recall_at_p50": 0.0,
+            "diagnostic_test_pr_curve_recall_at_p50": 0.0,
+            "recall_at_p50_definition": "PR-curve diagnostic on evaluated labels; NOT a validation-selected deployable threshold",
+            "confusion_matrix": [
+              [
+                7,
+                0
+              ],
+              [
+                1,
+                0
+              ]
+            ],
+            "metric_status": "defined",
+            "n": 8,
+            "n_pos": 1,
+            "pos_rate": 0.125
+          }
+        },
+        "mean_project_f1": 0.125,
+        "worst_project_f1": 0.0,
+        "mean_project_pr_auc": 0.33337247977340856,
+        "worst_project_pr_auc": 0.125,
+        "mean_project_roc_auc": 0.6645556198187776,
+        "worst_project_roc_auc": 0.5714285714285714,
+        "mean_project_precision": 0.175,
+        "worst_project_precision": 0.0,
+        "mean_project_recall": 0.125,
+        "worst_project_recall": 0.0
+      },
+      "test": {
+        "threshold": 0.5323035717010498,
+        "accuracy": 0.9375,
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "pr_auc": 0.11826391771947964,
+        "roc_auc": 0.6495726495726496,
+        "recall_at_p50": 0.0,
+        "diagnostic_test_pr_curve_recall_at_p50": 0.0,
+        "recall_at_p50_definition": "PR-curve diagnostic on evaluated labels; NOT a validation-selected deployable threshold",
+        "confusion_matrix": [
+          [
+            240,
+            3
+          ],
+          [
+            13,
+            0
+          ]
+        ],
+        "metric_status": "defined",
+        "n": 256,
+        "n_pos": 13,
+        "pos_rate": 0.05078125,
+        "groups": {
+          "6": {
+            "threshold": 0.5323035717010498,
+            "accuracy": 0.9375,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "pr_auc": 0.11826391771947964,
+            "roc_auc": 0.6495726495726496,
+            "recall_at_p50": 0.0,
+            "diagnostic_test_pr_curve_recall_at_p50": 0.0,
+            "recall_at_p50_definition": "PR-curve diagnostic on evaluated labels; NOT a validation-selected deployable threshold",
+            "confusion_matrix": [
+              [
+                240,
+                3
+              ],
+              [
+                13,
+                0
+              ]
+            ],
+            "metric_status": "defined",
+            "n": 256,
+            "n_pos": 13,
+            "pos_rate": 0.05078125
+          }
+        },
+        "mean_project_f1": 0.0,
+        "worst_project_f1": 0.0,
+        "mean_project_pr_auc": 0.11826391771947964,
+        "worst_project_pr_auc": 0.11826391771947964,
+        "mean_project_roc_auc": 0.6495726495726496,
+        "worst_project_roc_auc": 0.6495726495726496,
+        "mean_project_precision": 0.0,
+        "worst_project_precision": 0.0,
+        "mean_project_recall": 0.0,
+        "worst_project_recall": 0.0,
+        "validation_precision_floor_threshold": 0.5647587180137634,
+        "recall_at_validation_p50_threshold": 0.0,
+        "precision_at_validation_p50_threshold": 0.0
+      },
+      "config": {
+        "encoder": {
+          "name": "microsoft/codebert-base",
+          "revision": "3b0952feddeffad0063f274080e3c23d75e7eb39",
+          "max_length": 128,
+          "hidden_size": 768,
+          "dropout": 0.1,
+          "gradient_checkpointing": true
+        },
+        "train": {
+          "batch_size": 2,
+          "lr": 2e-05,
+          "weight_decay": 0.01,
+          "epochs": 2,
+          "warmup_steps": 0,
+          "grad_clip": 1.0,
+          "early_stopping_patience": 2,
+          "num_workers": 0,
+          "monitor": "pr_auc",
+          "checkpoint_path": null,
+          "resume": true,
+          "device": "cuda",
+          "amp": true
+        },
+        "eval": {
+          "batch_size": 2
+        },
+        "irm": {
+          "lambda_max": 10.0,
+          "warmup_epochs": 1
+        },
+        "dro": {
+          "eta_q": 0.01
+        },
+        "cc_dro": {
+          "eta_q": 0.01,
+          "lambda_inv": 1.0,
+          "warmup_epochs": 1,
+          "balanced_batches": true,
+          "use_pos_weight": false
+        },
+        "da": {
+          "coral_weight": 1.0,
+          "dann_lambda": 0.1,
+          "target_ratio": 0.5
+        },
+        "pseudo": {
+          "n_clusters": 5,
+          "embedding_subset": 1024
+        },
+        "data": {
+          "top_k": 10,
+          "train_ratio": 0.8,
+          "val_ratio": 0.1,
+          "test_ratio": 0.1,
+          "dedup": true
+        },
+        "compute_budget": {
+          "train_per_project": 32,
+          "val_limit": 128,
+          "target_limit": 128,
+          "test_limit": 256
+        }
+      },
+      "software": {
+        "python": "3.12.14",
+        "platform": "Linux-7.1.10-200.fc44.x86_64-x86_64-with-glibc2.43",
+        "packages": {
+          "torch": "2.10.0+cu128",
+          "transformers": "4.57.6",
+          "pandas": "3.0.6",
+          "numpy": "2.5.4",
+          "pyarrow": "26.0.0",
+          "scikit-learn": "1.9.1",
+          "duckdb": "1.5.6",
+          "ijson": "3.6.0"
+        },
+        "git_commit": "9ae55d80752245cfc60df577aa065f3d8c1fd742",
+        "git_dirty": true,
+        "source_signature": "fc06e02b2ef74100a5c6fd5bb24e36fa800749a53bb0fd21b1c2a70f8cf4c5de",
+        "source_hashes": {
+          "src/crossvul_dg/__init__.py": "54f8c71dc2e39e49cd0b5430c89c52ab92c3d11cb159bef8e8f08db5082242e5",
+          "src/crossvul_dg/cohorts.py": "2e722a5d6fd775591d79128a38eb8be359baf4fcea5deb964c22567e21fe7813",
+          "src/crossvul_dg/config.py": "9bd34ea6c946602f732a8a9eb3db906342ff0f64a130ec876fc9bfb081854906",
+          "src/crossvul_dg/count_projects.py": "efa30fb827b4d7446bdb46470090165ba8bc801e8d1a37349996dd0c3e8cdb39",
+          "src/crossvul_dg/data.py": "320400450ea7c417f79e8ff6e81ecbb9709ec6ba73afd214703db2be9f2a0b41",
+          "src/crossvul_dg/evaluate.py": "25f8868025c2ac1041bf5d5075cb3a70a8755dd57bc2681da2bce4f8717b210e",
+          "src/crossvul_dg/losses.py": "6ad212436f32de3825027f64c02dfab31a9db35d40596a80249206470c0465d3",
+          "src/crossvul_dg/models.py": "5c4e48ec4278afe9404a8af5684a9a5a8c40dc4513d0f2297c8031faf5b8ca1b",
+          "src/crossvul_dg/preprocessing.py": "d119f2530d8bf56b424663a98af8d28a000e91cb55c00115edee7063d812ec87",
+          "src/crossvul_dg/provenance.py": "155e1458fa88a3011bcac9ccc26892e55c10c4aaf7315e9c80c6a62e7174dd5a",
+          "src/crossvul_dg/pseudo_domains.py": "4ee3036cf750dfeb9c7d0b9c17ab91b7ed48c44bf1ea275a3dacc71cbe783928",
+          "src/crossvul_dg/resources.py": "8bdfa3ed6cee5b33da617ebee9f2a7cbf4067623489cce13f66e88780049d22f",
+          "src/crossvul_dg/trainers.py": "db54a64ccf0d8da797f3eab816a403f1bfad5e2ed44513bc4496ab0693f30bca",
+          "src/crossvul_dg/utils.py": "8b180d03c56d0b02c0b0894baf6430d1c8f43b30b49d6f1b258d24d490c6d7e6",
+          "scripts/aggregate_results.py": "a8fd4bca7c5fcf6055ca9cbb9d75456dd26f3cd3ac7e658b60918714a857f514",
+          "scripts/audit_data.py": "9e62aaf425be5fdd350dd05dddc36899efeae2c4d66a667ad650e1b393ffdd99",
+          "scripts/audit_token_lengths.py": "da1fe90e8f0cc8febe6cb81d80ee8849e279b15f0f46c4be087f4ef3b984c4d7",
+          "scripts/cache_backbone.py": "2f5c20c4abd8396f4b947b98d82310db91d810452e61926a04ca869f4c6c3005",
+          "scripts/check_default_config.py": "0fb69a1959dc49be296af08e8371028ffb2da424bb3ec4b9d02c0e5e9f1d4b48",
+          "scripts/package_training_bundle.py": "0305d31295962e4ff2779673ad0a74c64fb3779ac9405c2f3de5201ff14d282e",
+          "scripts/plan_real_ablations.py": "6e0c3a703ed4e8e386a1dfc3e90718f0816aa1501aa937e56cc7146ba56f4ec3",
+          "scripts/prepare_data.py": "6a83fae2a5a0d82ba66f755de2a62339017a1c9e6f4cfbf48097bbc511e9a0eb",
+          "scripts/run_focused_ablations.py": "081a1438b665058c9ee957207dc3acae914578f535312f4e6c6c154ae81ad316",
+          "scripts/run_full_sweep.sh": "10cad66c0789a47f546d33d0cc7a6146dcd242f407621e54d3bee3421618f5c6",
+          "scripts/run_guarded.py": "791aeb3aa1d9719cdf5a6a100ea2e1e76ab9c0379e6303e08e0c90da324bb0ad",
+          "scripts/run_lopo.py": "76d99dc1cde879d888e2dd28518797d1bdcfd9694448a07cb495fca07c57f151",
+          "scripts/run_one_colab.sh": "95a4ec3cc3c3178f607784ac1800e4f3fa6f451a2a2821f879b0f98a048a8c64",
+          "scripts/run_real_diagnostics.py": "5350bed7bac5d680d210b43fa602a1d486b9f20e6643f445636dcd9e7db53b1f",
+          "scripts/run_sanity_check.py": "08abb3cb714f9c9f9167eb4f4f795efb371a061d0c58a2a26144c1b52e7738c1",
+          "scripts/run_tier2_backbones.sh": "26f9214b64125e3ca8acb4544191e236ce40484cc81a06ade22f3e713e78178b",
+          "scripts/select_validation_run.py": "e8cc165de081b91f4c33a8e58343824ccffd2c06d57a912419a6ce72634e0616",
+          "configs/colab.yaml": "fa90952c90cc4816a84768e7a4609c7b3be2839487041b85c8b565d0b0f8922f",
+          "configs/default.yaml": "ae9d624b2827b0b48a20c43e0e456862d7b0752302dbdd0583415506fd993ba6",
+          "configs/local_gpu.yaml": "b3ae1e3598408359a73560d5897f7d0f7a3e363540314c8aa5b35ba430549a37"
+        }
+      },
+      "measurements": {
+        "runtime_seconds": 12.647280950994173,
+        "process_peak_rss_bytes": 3291111424,
+        "peak_cuda_allocated_bytes": 1761324032,
+        "peak_cuda_reserved_bytes": 1788870656
+      }
+    },
+    "CC-DRO lambda=0.1 (validation-selected)": {
+      "val": {
+        "threshold": 0.5257188677787781,
+        "accuracy": 0.8671875,
+        "precision": 0.3076923076923077,
+        "recall": 0.3333333333333333,
+        "f1": 0.32,
+        "pr_auc": 0.3099452878188382,
+        "roc_auc": 0.6566091954022989,
+        "recall_at_p50": 0.16666666666666666,
+        "diagnostic_test_pr_curve_recall_at_p50": 0.16666666666666666,
+        "recall_at_p50_definition": "PR-curve diagnostic on evaluated labels; NOT a validation-selected deployable threshold",
+        "confusion_matrix": [
+          [
+            107,
+            9
+          ],
+          [
+            8,
+            4
+          ]
+        ],
+        "metric_status": "defined",
+        "n": 128,
+        "n_pos": 12,
+        "pos_rate": 0.09375,
+        "groups": {
+          "0": {
+            "threshold": 0.5257188677787781,
+            "accuracy": 0.896551724137931,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "pr_auc": 0.125,
+            "roc_auc": 0.75,
+            "recall_at_p50": 0.0,
+            "diagnostic_test_pr_curve_recall_at_p50": 0.0,
+            "recall_at_p50_definition": "PR-curve diagnostic on evaluated labels; NOT a validation-selected deployable threshold",
+            "confusion_matrix": [
+              [
+                26,
+                2
+              ],
+              [
+                1,
+                0
+              ]
+            ],
+            "metric_status": "defined",
+            "n": 29,
+            "n_pos": 1,
+            "pos_rate": 0.034482758620689655
+          },
+          "2": {
+            "threshold": 0.5257188677787781,
+            "accuracy": 1.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "pr_auc": null,
+            "roc_auc": null,
+            "recall_at_p50": null,
+            "diagnostic_test_pr_curve_recall_at_p50": null,
+            "recall_at_p50_definition": "PR-curve diagnostic on evaluated labels; NOT a validation-selected deployable threshold",
+            "confusion_matrix": [
+              [
+                4,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "metric_status": "single_class_auc_undefined",
+            "n": 4,
+            "n_pos": 0,
+            "pos_rate": 0.0
+          },
+          "3": {
+            "threshold": 0.5257188677787781,
+            "accuracy": 0.9090909090909091,
+            "precision": 1.0,
+            "recall": 0.3333333333333333,
+            "f1": 0.5,
+            "pr_auc": 0.539499484004128,
+            "roc_auc": 0.736842105263158,
+            "recall_at_p50": 0.5,
+            "diagnostic_test_pr_curve_recall_at_p50": 0.5,
+            "recall_at_p50_definition": "PR-curve diagnostic on evaluated labels; NOT a validation-selected deployable threshold",
+            "confusion_matrix": [
+              [
+                38,
+                0
+              ],
+              [
+                4,
+                2
+              ]
+            ],
+            "metric_status": "defined",
+            "n": 44,
+            "n_pos": 6,
+            "pos_rate": 0.13636363636363635
+          },
+          "4": {
+            "threshold": 0.5257188677787781,
+            "accuracy": 1.0,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "pr_auc": null,
+            "roc_auc": null,
+            "recall_at_p50": null,
+            "diagnostic_test_pr_curve_recall_at_p50": null,
+            "recall_at_p50_definition": "PR-curve diagnostic on evaluated labels; NOT a validation-selected deployable threshold",
+            "confusion_matrix": [
+              [
+                1,
+                0
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "metric_status": "single_class_auc_undefined",
+            "n": 1,
+            "n_pos": 0,
+            "pos_rate": 0.0
+          },
+          "5": {
+            "threshold": 0.5257188677787781,
+            "accuracy": 0.7857142857142857,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "pr_auc": 0.16666666666666666,
+            "roc_auc": 0.6153846153846154,
+            "recall_at_p50": 0.0,
+            "diagnostic_test_pr_curve_recall_at_p50": 0.0,
+            "recall_at_p50_definition": "PR-curve diagnostic on evaluated labels; NOT a validation-selected deployable threshold",
+            "confusion_matrix": [
+              [
+                11,
+                2
+              ],
+              [
+                1,
+                0
+              ]
+            ],
+            "metric_status": "defined",
+            "n": 14,
+            "n_pos": 1,
+            "pos_rate": 0.07142857142857142
+          },
+          "7": {
+            "threshold": 0.5257188677787781,
+            "accuracy": 0.7647058823529411,
+            "precision": 0.4,
+            "recall": 0.6666666666666666,
+            "f1": 0.5,
+            "pr_auc": 0.7291666666666666,
+            "roc_auc": 0.6904761904761905,
+            "recall_at_p50": 0.6666666666666666,
+            "diagnostic_test_pr_curve_recall_at_p50": 0.6666666666666666,
+            "recall_at_p50_definition": "PR-curve diagnostic on evaluated labels; NOT a validation-selected deployable threshold",
+            "confusion_matrix": [
+              [
+                11,
+                3
+              ],
+              [
+                1,
+                2
+              ]
+            ],
+            "metric_status": "defined",
+            "n": 17,
+            "n_pos": 3,
+            "pos_rate": 0.17647058823529413
+          },
+          "8": {
+            "threshold": 0.5257188677787781,
+            "accuracy": 0.8181818181818182,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "pr_auc": null,
+            "roc_auc": null,
+            "recall_at_p50": null,
+            "diagnostic_test_pr_curve_recall_at_p50": null,
+            "recall_at_p50_definition": "PR-curve diagnostic on evaluated labels; NOT a validation-selected deployable threshold",
+            "confusion_matrix": [
+              [
+                9,
+                2
+              ],
+              [
+                0,
+                0
+              ]
+            ],
+            "metric_status": "single_class_auc_undefined",
+            "n": 11,
+            "n_pos": 0,
+            "pos_rate": 0.0
+          },
+          "9": {
+            "threshold": 0.5257188677787781,
+            "accuracy": 0.875,
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1": 0.0,
+            "pr_auc": 0.25,
+            "roc_auc": 0.5714285714285714,
+            "recall_at_p50": 0.0,
+            "diagnostic_test_pr_curve_recall_at_p50": 0.0,
+            "recall_at_p50_definition": "PR-curve diagnostic on evaluated labels; NOT a validation-selected deployable threshold",
+            "confusion_matrix": [
+              [
+                7,
+                0
+              ],
+              [
+                1,
+                0
+              ]
+            ],
+            "metric_status": "defined",
+            "n": 8,
+            "n_pos": 1,
+            "pos_rate": 0.125
+          }
+        },
+        "mean_project_f1": 0.125,
+        "worst_project_f1": 0.0,
+        "mean_project_pr_auc": 0.3620665634674922,
+        "worst_project_pr_auc": 0.125,
+        "mean_project_roc_auc": 0.6728262965105071,
+        "worst_project_roc_auc": 0.5714285714285714,
+        "mean_project_precision": 0.175,
+        "worst_project_precision": 0.0,
+        "mean_project_recall": 0.125,
+        "worst_project_recall": 0.0
+      },
+      "test": {
+        "threshold": 0.5257188677787781,
+        "accuracy": 0.9375,
+        "precision": 0.2,
+        "recall": 0.07692307692307693,
+        "f1": 0.1111111111111111,
+        "pr_auc": 0.12925322621248367,
+        "roc_auc": 0.652105096549541,
+        "recall_at_p50": 0.0,
+        "diagnostic_test_pr_curve_recall_at_p50": 0.0,
+        "recall_at_p50_definition": "PR-curve diagnostic on evaluated labels; NOT a validation-selected deployable threshold",
+        "confusion_matrix": [
+          [
+            239,
+            4
+          ],
+          [
+            12,
+            1
+          ]
+        ],
+        "metric_status": "defined",
+        "n": 256,
+        "n_pos": 13,
+        "pos_rate": 0.05078125,
+        "groups": {
+          "6": {
+            "threshold": 0.5257188677787781,
+            "accuracy": 0.9375,
+            "precision": 0.2,
+            "recall": 0.07692307692307693,
+            "f1": 0.1111111111111111,
+            "pr_auc": 0.12925322621248367,
+            "roc_auc": 0.652105096549541,
+            "recall_at_p50": 0.0,
+            "diagnostic_test_pr_curve_recall_at_p50": 0.0,
+            "recall_at_p50_definition": "PR-curve diagnostic on evaluated labels; NOT a validation-selected deployable threshold",
+            "confusion_matrix": [
+              [
+                239,
+                4
+              ],
+              [
+                12,
+                1
+              ]
+            ],
+            "metric_status": "defined",
+            "n": 256,
+            "n_pos": 13,
+            "pos_rate": 0.05078125
+          }
+        },
+        "mean_project_f1": 0.1111111111111111,
+        "worst_project_f1": 0.1111111111111111,
+        "mean_project_pr_auc": 0.12925322621248367,
+        "worst_project_pr_auc": 0.12925322621248367,
+        "mean_project_roc_auc": 0.652105096549541,
+        "worst_project_roc_auc": 0.652105096549541,
+        "mean_project_precision": 0.2,
+        "worst_project_precision": 0.2,
+        "mean_project_recall": 0.07692307692307693,
+        "worst_project_recall": 0.07692307692307693,
+        "validation_precision_floor_threshold": 0.5689547657966614,
+        "recall_at_validation_p50_threshold": 0.0,
+        "precision_at_validation_p50_threshold": 0.0
+      },
+      "config": {
+        "encoder": {
+          "name": "microsoft/codebert-base",
+          "revision": "3b0952feddeffad0063f274080e3c23d75e7eb39",
+          "max_length": 128,
+          "hidden_size": 768,
+          "dropout": 0.1,
+          "gradient_checkpointing": true
+        },
+        "train": {
+          "batch_size": 2,
+          "lr": 2e-05,
+          "weight_decay": 0.01,
+          "epochs": 2,
+          "warmup_steps": 0,
+          "grad_clip": 1.0,
+          "early_stopping_patience": 2,
+          "num_workers": 0,
+          "monitor": "pr_auc",
+          "checkpoint_path": null,
+          "resume": true,
+          "device": "cuda",
+          "amp": true
+        },
+        "eval": {
+          "batch_size": 2
+        },
+        "irm": {
+          "lambda_max": 10.0,
+          "warmup_epochs": 1
+        },
+        "dro": {
+          "eta_q": 0.01
+        },
+        "cc_dro": {
+          "eta_q": 0.01,
+          "lambda_inv": 0.1,
+          "warmup_epochs": 1,
+          "balanced_batches": true,
+          "use_pos_weight": false
+        },
+        "da": {
+          "coral_weight": 1.0,
+          "dann_lambda": 0.1,
+          "target_ratio": 0.5
+        },
+        "pseudo": {
+          "n_clusters": 5,
+          "embedding_subset": 1024
+        },
+        "data": {
+          "top_k": 10,
+          "train_ratio": 0.8,
+          "val_ratio": 0.1,
+          "test_ratio": 0.1,
+          "dedup": true
+        },
+        "compute_budget": {
+          "train_per_project": 32,
+          "val_limit": 128,
+          "target_limit": 128,
+          "test_limit": 256
+        }
+      },
+      "software": {
+        "python": "3.12.14",
+        "platform": "Linux-7.1.10-200.fc44.x86_64-x86_64-with-glibc2.43",
+        "packages": {
+          "torch": "2.10.0+cu128",
+          "transformers": "4.57.6",
+          "pandas": "3.0.6",
+          "numpy": "2.5.4",
+          "pyarrow": "26.0.0",
+          "scikit-learn": "1.9.1",
+          "duckdb": "1.5.6",
+          "ijson": "3.6.0"
+        },
+        "git_commit": "9ae55d80752245cfc60df577aa065f3d8c1fd742",
+        "git_dirty": true,
+        "source_signature": "fc06e02b2ef74100a5c6fd5bb24e36fa800749a53bb0fd21b1c2a70f8cf4c5de",
+        "source_hashes": {
+          "src/crossvul_dg/__init__.py": "54f8c71dc2e39e49cd0b5430c89c52ab92c3d11cb159bef8e8f08db5082242e5",
+          "src/crossvul_dg/cohorts.py": "2e722a5d6fd775591d79128a38eb8be359baf4fcea5deb964c22567e21fe7813",
+          "src/crossvul_dg/config.py": "9bd34ea6c946602f732a8a9eb3db906342ff0f64a130ec876fc9bfb081854906",
+          "src/crossvul_dg/count_projects.py": "efa30fb827b4d7446bdb46470090165ba8bc801e8d1a37349996dd0c3e8cdb39",
+          "src/crossvul_dg/data.py": "320400450ea7c417f79e8ff6e81ecbb9709ec6ba73afd214703db2be9f2a0b41",
+          "src/crossvul_dg/evaluate.py": "25f8868025c2ac1041bf5d5075cb3a70a8755dd57bc2681da2bce4f8717b210e",
+          "src/crossvul_dg/losses.py": "6ad212436f32de3825027f64c02dfab31a9db35d40596a80249206470c0465d3",
+          "src/crossvul_dg/models.py": "5c4e48ec4278afe9404a8af5684a9a5a8c40dc4513d0f2297c8031faf5b8ca1b",
+          "src/crossvul_dg/preprocessing.py": "d119f2530d8bf56b424663a98af8d28a000e91cb55c00115edee7063d812ec87",
+          "src/crossvul_dg/provenance.py": "155e1458fa88a3011bcac9ccc26892e55c10c4aaf7315e9c80c6a62e7174dd5a",
+          "src/crossvul_dg/pseudo_domains.py": "4ee3036cf750dfeb9c7d0b9c17ab91b7ed48c44bf1ea275a3dacc71cbe783928",
+          "src/crossvul_dg/resources.py": "8bdfa3ed6cee5b33da617ebee9f2a7cbf4067623489cce13f66e88780049d22f",
+          "src/crossvul_dg/trainers.py": "db54a64ccf0d8da797f3eab816a403f1bfad5e2ed44513bc4496ab0693f30bca",
+          "src/crossvul_dg/utils.py": "8b180d03c56d0b02c0b0894baf6430d1c8f43b30b49d6f1b258d24d490c6d7e6",
+          "scripts/aggregate_results.py": "a8fd4bca7c5fcf6055ca9cbb9d75456dd26f3cd3ac7e658b60918714a857f514",
+          "scripts/audit_data.py": "9e62aaf425be5fdd350dd05dddc36899efeae2c4d66a667ad650e1b393ffdd99",
+          "scripts/audit_token_lengths.py": "da1fe90e8f0cc8febe6cb81d80ee8849e279b15f0f46c4be087f4ef3b984c4d7",
+          "scripts/cache_backbone.py": "2f5c20c4abd8396f4b947b98d82310db91d810452e61926a04ca869f4c6c3005",
+          "scripts/check_default_config.py": "0fb69a1959dc49be296af08e8371028ffb2da424bb3ec4b9d02c0e5e9f1d4b48",
+          "scripts/package_training_bundle.py": "0305d31295962e4ff2779673ad0a74c64fb3779ac9405c2f3de5201ff14d282e",
+          "scripts/plan_real_ablations.py": "6e0c3a703ed4e8e386a1dfc3e90718f0816aa1501aa937e56cc7146ba56f4ec3",
+          "scripts/prepare_data.py": "6a83fae2a5a0d82ba66f755de2a62339017a1c9e6f4cfbf48097bbc511e9a0eb",
+          "scripts/run_focused_ablations.py": "081a1438b665058c9ee957207dc3acae914578f535312f4e6c6c154ae81ad316",
+          "scripts/run_full_sweep.sh": "10cad66c0789a47f546d33d0cc7a6146dcd242f407621e54d3bee3421618f5c6",
+          "scripts/run_guarded.py": "791aeb3aa1d9719cdf5a6a100ea2e1e76ab9c0379e6303e08e0c90da324bb0ad",
+          "scripts/run_lopo.py": "76d99dc1cde879d888e2dd28518797d1bdcfd9694448a07cb495fca07c57f151",
+          "scripts/run_one_colab.sh": "95a4ec3cc3c3178f607784ac1800e4f3fa6f451a2a2821f879b0f98a048a8c64",
+          "scripts/run_real_diagnostics.py": "5350bed7bac5d680d210b43fa602a1d486b9f20e6643f445636dcd9e7db53b1f",
+          "scripts/run_sanity_check.py": "08abb3cb714f9c9f9167eb4f4f795efb371a061d0c58a2a26144c1b52e7738c1",
+          "scripts/run_tier2_backbones.sh": "26f9214b64125e3ca8acb4544191e236ce40484cc81a06ade22f3e713e78178b",
+          "scripts/select_validation_run.py": "e8cc165de081b91f4c33a8e58343824ccffd2c06d57a912419a6ce72634e0616",
+          "configs/colab.yaml": "fa90952c90cc4816a84768e7a4609c7b3be2839487041b85c8b565d0b0f8922f",
+          "configs/default.yaml": "ae9d624b2827b0b48a20c43e0e456862d7b0752302dbdd0583415506fd993ba6",
+          "configs/local_gpu.yaml": "b3ae1e3598408359a73560d5897f7d0f7a3e363540314c8aa5b35ba430549a37"
+        }
+      },
+      "measurements": {
+        "runtime_seconds": 11.704912175002391,
+        "process_peak_rss_bytes": 3602681856,
+        "peak_cuda_allocated_bytes": 1761324032,
+        "peak_cuda_reserved_bytes": 1788870656
+      }
+    }
+  },
+  "resource_guards": {
+    "Tiny real fit": {
+      "command": [
+        ".venv-gpu/bin/python",
+        "scripts/run_real_diagnostics.py",
+        "--config",
+        "configs/local_gpu.yaml",
+        "--steps",
+        "50",
+        "--per_class",
+        "8",
+        "--out",
+        "experiments/outputs/tiny_real.json"
+      ],
+      "exit_code": 0,
+      "abort_reason": null,
+      "runtime_seconds": 87.19459107999865,
+      "peak_child_rss_bytes": 1914318848,
+      "peak_child_gpu_bytes": 2715811840,
+      "min_system_available_ram_bytes": 3084537856,
+      "initial_resources": {
+        "available_ram_bytes": 4354453504,
+        "total_ram_bytes": 16354541568,
+        "swap_used_bytes": 15752503296,
+        "disk_free_bytes": 174674329600
+      },
+      "final_resources": {
+        "available_ram_bytes": 4573835264,
+        "total_ram_bytes": 16354541568,
+        "swap_used_bytes": 15571673088,
+        "disk_free_bytes": 174516166656
+      },
+      "sampling_seconds": 2
+    },
+    "ERM": {
+      "command": [
+        ".venv-gpu/bin/python",
+        "scripts/run_lopo.py",
+        "--config",
+        "configs/local_gpu.yaml",
+        "--method",
+        "erm",
+        "--held_out",
+        "torvalds/linux",
+        "--seed",
+        "0",
+        "--data_path",
+        "data/processed/top10.parquet",
+        "--output_dir",
+        "runs/real_baselines/bounded-v1/erm",
+        "--train_per_project",
+        "32",
+        "--val_limit",
+        "128",
+        "--target_limit",
+        "128",
+        "--test_limit",
+        "256"
+      ],
+      "exit_code": 0,
+      "abort_reason": null,
+      "runtime_seconds": 60.80004150100285,
+      "peak_child_rss_bytes": 2744455168,
+      "peak_child_gpu_bytes": 2713714688,
+      "min_system_available_ram_bytes": 2012987392,
+      "initial_resources": {
+        "available_ram_bytes": 4463726592,
+        "total_ram_bytes": 16354541568,
+        "swap_used_bytes": 15443804160,
+        "disk_free_bytes": 174386831360
+      },
+      "final_resources": {
+        "available_ram_bytes": 4416393216,
+        "total_ram_bytes": 16354541568,
+        "swap_used_bytes": 15675469824,
+        "disk_free_bytes": 171805626368
+      },
+      "sampling_seconds": 2
+    },
+    "CC-DRO training": {
+      "command": [
+        ".venv-gpu/bin/python",
+        "scripts/run_lopo.py",
+        "--config",
+        "configs/local_gpu.yaml",
+        "--method",
+        "cc-dro",
+        "--held_out",
+        "torvalds/linux",
+        "--seed",
+        "0",
+        "--data_path",
+        "data/processed/top10.parquet",
+        "--output_dir",
+        "runs/real_baselines/bounded-v1/cc-dro",
+        "--train_per_project",
+        "32",
+        "--val_limit",
+        "128",
+        "--target_limit",
+        "128",
+        "--test_limit",
+        "256"
+      ],
+      "exit_code": -15,
+      "abort_reason": "system swap grew more than 1 GiB",
+      "runtime_seconds": 43.17281883399846,
+      "peak_child_rss_bytes": 3235426304,
+      "peak_child_gpu_bytes": 2717908992,
+      "min_system_available_ram_bytes": 2055663616,
+      "initial_resources": {
+        "available_ram_bytes": 4262531072,
+        "total_ram_bytes": 16354541568,
+        "swap_used_bytes": 15294210048,
+        "disk_free_bytes": 171806195712
+      },
+      "final_resources": {
+        "available_ram_bytes": 4757860352,
+        "total_ram_bytes": 16354541568,
+        "swap_used_bytes": 16464596992,
+        "disk_free_bytes": 169511346176
+      },
+      "sampling_seconds": 2
+    },
+    "CC-DRO resumed evaluation": {
+      "command": [
+        ".venv-gpu/bin/python",
+        "scripts/run_lopo.py",
+        "--config",
+        "configs/local_gpu.yaml",
+        "--method",
+        "cc-dro",
+        "--held_out",
+        "torvalds/linux",
+        "--seed",
+        "0",
+        "--data_path",
+        "data/processed/top10.parquet",
+        "--output_dir",
+        "runs/real_baselines/bounded-v1/cc-dro",
+        "--train_per_project",
+        "32",
+        "--val_limit",
+        "128",
+        "--target_limit",
+        "128",
+        "--test_limit",
+        "256"
+      ],
+      "exit_code": 0,
+      "abort_reason": null,
+      "runtime_seconds": 20.26186068800598,
+      "peak_child_rss_bytes": 3291111424,
+      "peak_child_gpu_bytes": 1914699776,
+      "min_system_available_ram_bytes": 2194587648,
+      "initial_resources": {
+        "available_ram_bytes": 4952186880,
+        "total_ram_bytes": 16354541568,
+        "swap_used_bytes": 16113254400,
+        "disk_free_bytes": 169512980480
+      },
+      "final_resources": {
+        "available_ram_bytes": 6641283072,
+        "total_ram_bytes": 16354541568,
+        "swap_used_bytes": 10515632128,
+        "disk_free_bytes": 169512980480
+      },
+      "sampling_seconds": 2
+    },
+    "Selected CC-DRO evaluation": {
+      "command": [
+        ".venv-gpu/bin/python",
+        "scripts/run_lopo.py",
+        "--config",
+        "configs/local_gpu.yaml",
+        "--method",
+        "cc-dro",
+        "--held_out",
+        "torvalds/linux",
+        "--seed",
+        "0",
+        "--data_path",
+        "data/processed/top10.parquet",
+        "--output_dir",
+        "runs/real_ablations/bounded-v1/lambda01",
+        "--train_per_project",
+        "32",
+        "--val_limit",
+        "128",
+        "--target_limit",
+        "128",
+        "--test_limit",
+        "256",
+        "--override",
+        "cc_dro.lambda_inv=0.1"
+      ],
+      "exit_code": 0,
+      "abort_reason": null,
+      "runtime_seconds": 16.180901038002048,
+      "peak_child_rss_bytes": 3602681856,
+      "peak_child_gpu_bytes": 1914699776,
+      "min_system_available_ram_bytes": 4541071360,
+      "initial_resources": {
+        "available_ram_bytes": 7270268928,
+        "total_ram_bytes": 16354541568,
+        "swap_used_bytes": 10257203200,
+        "disk_free_bytes": 158305398784
+      },
+      "final_resources": {
+        "available_ram_bytes": 7266942976,
+        "total_ram_bytes": 16354541568,
+        "swap_used_bytes": 10244038656,
+        "disk_free_bytes": 158323937280
+      },
+      "sampling_seconds": 2
+    }
+  },
+  "not_run": [
+    "full-population training",
+    "multi-project/seed evaluation",
+    "length256/512 local training"
+  ],
+  "checkpoint_validation": [
+    {
+      "run": "runs/real_baselines/bounded-v1/erm",
+      "best_model_all_finite": true,
+      "optimizer_all_finite": true,
+      "completed_epoch": 1,
+      "optimizer_steps": 287,
+      "amp_skipped_steps": 1
+    },
+    {
+      "run": "runs/real_baselines/bounded-v1/cc-dro",
+      "best_model_all_finite": true,
+      "optimizer_all_finite": true,
+      "completed_epoch": 1,
+      "optimizer_steps": 32,
+      "amp_skipped_steps": 0
+    },
+    {
+      "run": "runs/real_ablations/bounded-v1/lambda01",
+      "best_model_all_finite": true,
+      "optimizer_all_finite": true,
+      "completed_epoch": 1,
+      "optimizer_steps": 32,
+      "amp_skipped_steps": 0
+    }
+  ],
+  "validation_selection": {
+    "policy": "maximum validation AP; deterministic path tie-break; test metrics not accessed",
+    "method": "cc-dro",
+    "validation_cohort_signature": "33c22c4b4e5167f0ac9aae5cd22b93710931f952cd79212f9cddbc3ac564a773",
+    "best_selection_path": "runs/real_ablations/bounded-v1/lambda01/selection.json",
+    "best_validation_ap": 0.3099452878188382,
+    "best_config": {
+      "encoder": {
+        "name": "microsoft/codebert-base",
+        "revision": "3b0952feddeffad0063f274080e3c23d75e7eb39",
+        "max_length": 128,
+        "hidden_size": 768,
+        "dropout": 0.1,
+        "gradient_checkpointing": true
+      },
+      "train": {
+        "batch_size": 2,
+        "lr": 2e-05,
+        "weight_decay": 0.01,
+        "epochs": 2,
+        "warmup_steps": 0,
+        "grad_clip": 1.0,
+        "early_stopping_patience": 2,
+        "num_workers": 0,
+        "monitor": "pr_auc",
+        "checkpoint_path": null,
+        "resume": true,
+        "device": "cuda",
+        "amp": true
+      },
+      "eval": {
+        "batch_size": 2
+      },
+      "irm": {
+        "lambda_max": 10.0,
+        "warmup_epochs": 1
+      },
+      "dro": {
+        "eta_q": 0.01
+      },
+      "cc_dro": {
+        "eta_q": 0.01,
+        "lambda_inv": 0.1,
+        "warmup_epochs": 1,
+        "balanced_batches": true,
+        "use_pos_weight": false
+      },
+      "da": {
+        "coral_weight": 1.0,
+        "dann_lambda": 0.1,
+        "target_ratio": 0.5
+      },
+      "pseudo": {
+        "n_clusters": 5,
+        "embedding_subset": 1024
+      },
+      "data": {
+        "top_k": 10,
+        "train_ratio": 0.8,
+        "val_ratio": 0.1,
+        "test_ratio": 0.1,
+        "dedup": true
+      },
+      "compute_budget": {
+        "train_per_project": 32,
+        "val_limit": 128,
+        "target_limit": 128,
+        "test_limit": 256
+      }
+    },
+    "candidates": [
+      {
+        "validation_ap": 0.22412494616911488,
+        "path": "runs/real_ablations/bounded-v1/base/selection.json"
+      },
+      {
+        "validation_ap": 0.280148804269162,
+        "path": "runs/real_ablations/bounded-v1/lambda0/selection.json"
+      },
+      {
+        "validation_ap": 0.22668403253378622,
+        "path": "runs/real_ablations/bounded-v1/lambda001/selection.json"
+      },
+      {
+        "validation_ap": 0.3099452878188382,
+        "path": "runs/real_ablations/bounded-v1/lambda01/selection.json"
+      },
+      {
+        "validation_ap": 0.2702861075690731,
+        "path": "runs/real_ablations/bounded-v1/lr1e-5/selection.json"
+      },
+      {
+        "validation_ap": 0.21515142133355034,
+        "path": "runs/real_ablations/bounded-v1/lr3e-5/selection.json"
+      }
+    ]
+  },
+  "sequence_preflight": [
+    {
+      "max_length": 128,
+      "status": "PREFLIGHT_PASSED",
+      "resources": {
+        "available_ram_bytes": 7011450880,
+        "total_ram_bytes": 16354541568,
+        "swap_used_bytes": 10257702912,
+        "disk_free_bytes": 158305398784,
+        "cuda_free_bytes": 3787063296,
+        "cuda_total_bytes": 3950575616,
+        "estimated_cuda_required_bytes": 3121741824,
+        "estimate_note": "Conservative estimate; a guarded measured step is required"
+      }
+    },
+    {
+      "max_length": 256,
+      "status": "NOT_RUN_PREFLIGHT_REJECTED",
+      "reason": "CUDA preflight rejected: free=3787063296, estimated_required=4732354560; reduce length or use larger GPU"
+    },
+    {
+      "max_length": 512,
+      "status": "NOT_RUN_PREFLIGHT_REJECTED",
+      "reason": "CUDA preflight rejected: free=3787063296, estimated_required=11174805504; reduce length or use larger GPU"
+    }
+  ],
+  "analysis_notebook": "Actual code cells executed headlessly against real measured baselines; chart generated; two affected regression tests passed",
+  "colab_notebook": "Source cells compile; remote execution NOT RUN; manual transfer only"
+}

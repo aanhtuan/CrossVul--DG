@@ -1,0 +1,18 @@
+{
+  "status": "VERIFIED_LOCAL_SCHEMA_AND_FULL_PROCESSING",
+  "original_path": "/home/atuna/Downloads/CrossVul_DG_Run/megavul/megavul.json",
+  "canonical_path": "/home/atuna/Downloads/CrossVul_DG_Run/data/raw/megavul/megavul.json",
+  "integration": "hardlink; original preserved; same device/inode",
+  "size_bytes": 2668796982,
+  "sha256": "eabe8d3325be358d7a93327e3ae4f001725517a0067c4d80198f89904177419f",
+  "source_url": "https://github.com/Icyrockton/MegaVul",
+  "specification_url": "https://github.com/Icyrockton/MegaVul/blob/main/SPECIFICATION.md",
+  "authenticity": "User states authentic MegaVul; sampled full schema matches; publisher checksum unavailable for independent authentication",
+  "release_version": "not supplied",
+  "user_supplied_date": "2026-10-20",
+  "folder_classification": "dataset only; no upstream source checkout or graph resources present",
+  "original_mtime_ns": 1792430923436009094,
+  "hardlink_count": 2,
+  "raw_rows_validated": 353873,
+  "clean_rows": 330345
+}
